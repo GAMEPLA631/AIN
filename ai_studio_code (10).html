@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Visual Studio — 9.6M Credit • Open-Source Video</title>
+  <style>
+    :root {
+      --bg: #080a0f;
+      --bg-elev: #101420;
+      --bg-glass: rgba(16, 20, 32, 0.82);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #eef2ff;
+      --muted: #8b95b0;
+      --accent: #7c5cff;
+      --accent-2: #00d4ff;
+      --gold: #fbbf24;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(900px 500px at 10% -10%, rgba(124, 92, 255, 0.18), transparent 60%),
+        radial-gradient(700px 450px at 95% 10%, rgba(0, 212, 255, 0.12), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 300px;
+      background: rgba(11, 14, 22, 0.94);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; padding: 2px 2px 6px; }
+    .brand-logo {
+      width: 36px; height: 36px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; font-weight: 800; font-size: 16px; color: #fff;
+      box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+    }
+    .brand h1 { font-size: 15px; font-weight: 700; }
+    .brand p { font-size: 11px; color: var(--muted); }
+
+    /* Credit Wallet Card */
+    .credit-card {
+      background: linear-gradient(145deg, rgba(124, 92, 255, 0.16), rgba(0, 212, 255, 0.08));
+      border: 1px solid rgba(124, 92, 255, 0.38);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .credit-top { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: #cbd5e1; }
+    .credit-amount {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .credit-bar-bg {
+      height: 6px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden;
+    }
+    .credit-bar-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-2), var(--gold));
+      width: 100%; transition: width 0.3s ease;
+    }
+    .credit-sub { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+
+    .nav-tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      background: rgba(255,255,255,0.03); padding: 4px;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .nav-tab {
+      border: none; background: transparent; color: var(--muted);
+      padding: 8px 10px; border-radius: 9px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .nav-tab.active {
+      background: rgba(124, 92, 255, 0.22); color: var(--text);
+      border: 1px solid rgba(124, 92, 255, 0.35);
+    }
+
+    .btn-new-chat {
+      width: 100%; padding: 10px 12px; border-radius: 12px;
+      border: 1px dashed var(--border-strong); background: rgba(255,255,255,0.03);
+      color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .btn-new-chat:hover { background: rgba(124, 92, 255, 0.14); border-color: var(--accent); }
+
+    .chat-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+    .chat-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 9px 11px; border-radius: 11px; border: 1px solid transparent;
+      background: rgba(255,255,255,0.02); cursor: pointer; font-size: 13px;
+    }
+    .chat-item:hover { background: rgba(255,255,255,0.05); }
+    .chat-item.active { background: rgba(124, 92, 255, 0.16); border-color: rgba(124, 92, 255, 0.35); }
+    .chat-item-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+    .chat-item-del {
+      border: none; background: transparent; color: var(--muted);
+      cursor: pointer; font-size: 13px; padding: 2px 5px; border-radius: 6px;
+    }
+    .chat-item-del:hover { color: var(--danger); background: rgba(239,68,68,0.12); }
+
+    .db-card {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 13px; padding: 10px 12px; font-size: 12px;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .db-card-row { display: flex; justify-content: space-between; color: var(--muted); }
+    .db-card strong { color: var(--text); }
+
+    /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; }
+
+    .topbar {
+      padding: 12px 20px; border-bottom: 1px solid var(--border);
+      background: rgba(11, 14, 22, 0.78); backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .select-pill, .input-mini {
+      background: var(--bg-elev); color: var(--text);
+      border: 1px solid var(--border-strong); border-radius: 11px;
+      padding: 8px 12px; font-size: 12.5px; font-weight: 500; outline: none;
+    }
+    .select-pill:focus, .input-mini:focus { border-color: var(--accent); }
+
+    .ratio-switch {
+      display: inline-flex; background: var(--bg-elev);
+      border: 1px solid var(--border-strong); border-radius: 11px; padding: 3px; gap: 3px;
+    }
+    .ratio-btn {
+      border: none; background: transparent; color: var(--muted);
+      padding: 6px 11px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .ratio-btn.active { background: linear-gradient(135deg, var(--accent), #5b45e0); color: #fff; }
+    .ratio-box { border: 1.5px solid currentColor; border-radius: 2px; display: inline-block; }
+    .ratio-box.r169 { width: 16px; height: 9px; }
+    .ratio-box.r916 { width: 9px; height: 15px; }
+
+    .btn-ghost {
+      border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03);
+      color: var(--text); padding: 7px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+    .settings-bar {
+      display: none; padding: 12px 20px; background: rgba(16, 20, 32, 0.96);
+      border-bottom: 1px solid var(--border); gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px;
+    }
+    .settings-bar.open { display: flex; }
+    .setting-group { display: flex; align-items: center; gap: 7px; }
+    .setting-group label { color: var(--muted); }
+
+    .view { display: none; flex: 1; flex-direction: column; min-height: 0; }
+    .view.active { display: flex; }
+
+    .messages {
+      flex: 1; overflow-y: auto; padding: 24px 20px;
+      display: flex; flex-direction: column; gap: 18px;
+      max-width: 980px; width: 100%; margin: 0 auto;
+    }
+
+    .empty-state {
+      margin: auto; text-align: center; max-width: 590px; padding: 28px;
+      border-radius: 22px; background: rgba(255,255,255,0.025); border: 1px solid var(--border);
+    }
+    .empty-state h2 {
+      font-size: 22px; margin-bottom: 8px;
+      background: linear-gradient(90deg, #fff, #b8c2ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .empty-state p { color: var(--muted); font-size: 13.5px; line-height: 1.55; margin-bottom: 16px; }
+    .prompt-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .chip {
+      border: 1px solid var(--border-strong); background: rgba(255,255,255,0.04);
+      color: var(--text); padding: 7px 12px; border-radius: 999px; font-size: 12px; cursor: pointer;
+    }
+    .chip:hover { border-color: var(--accent); background: rgba(124, 92, 255, 0.15); }
+
+    .msg { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp 0.2s ease-out; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .msg.user { flex-direction: row-reverse; }
+
+    .avatar {
+      width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .msg.user .avatar { background: rgba(0, 212, 255, 0.16); color: var(--accent-2); border: 1px solid rgba(0,212,255,0.3); }
+    .msg.assistant .avatar { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
+
+    .bubble {
+      max-width: min(720px, 84%); padding: 14px 16px; border-radius: 18px;
+      border: 1px solid var(--border); background: var(--bg-glass);
+      backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 10px;
+    }
+    .msg.user .bubble { background: rgba(124, 92, 255, 0.14); border-color: rgba(124, 92, 255, 0.32); }
+
+    .meta-badges { display: flex; gap: 6px; flex-wrap: wrap; font-size: 11px; }
+    .badge { padding: 3px 8px; border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+    .badge.ok { color: #86efac; border-color: rgba(34,197,94,0.35); background: rgba(34,197,94,0.1); }
+    .badge.gold { color: var(--gold); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.1); }
+
+    .msg-img { border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong); background: #000; }
+    .msg-img.r169 { aspect-ratio: 16 / 9; width: 300px; max-width: 100%; }
+    .msg-img.r916 { aspect-ratio: 9 / 16; width: 170px; }
+    .msg-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .video-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--border-strong); background: #000; }
+    .video-wrap.r169 { aspect-ratio: 16 / 9; width: min(480px, 100%); }
+    .video-wrap.r916 { aspect-ratio: 9 / 16; width: 250px; }
+    .video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .status-line { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #cbd5e1; }
+    .spinner {
+      width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: var(--accent-2); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      padding: 10px 12px; border-radius: 10px; background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; font-size: 13px; line-height: 1.45;
+    }
+
+    /* Composer */
+    .composer-shell {
+      padding: 12px 20px 18px; border-top: 1px solid var(--border);
+      background: rgba(9, 11, 16, 0.92); backdrop-filter: blur(16px);
+    }
+    .composer {
+      max-width: 980px; margin: 0 auto; background: var(--bg-elev);
+      border: 1px solid var(--border-strong); border-radius: 18px; padding: 12px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .composer.dragover { border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18); }
+    .composer-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .upload-preview {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 6px 10px; border-radius: 12px;
+    }
+    .preview-thumb { background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-strong); }
+    .preview-thumb.r169 { width: 72px; height: 40px; }
+    .preview-thumb.r916 { width: 36px; height: 64px; }
+    .preview-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .composer-bottom { display: flex; gap: 10px; align-items: flex-end; }
+    textarea#promptInput {
+      flex: 1; background: transparent; border: none; color: var(--text);
+      font-family: inherit; font-size: 14px; resize: none; min-height: 44px; max-height: 140px; padding: 6px 4px; outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #5238e8);
+      color: #fff; border: none; padding: 11px 18px; border-radius: 12px;
+      font-size: 13.5px; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 20px rgba(124, 92, 255, 0.35); white-space: nowrap;
+    }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Gallery */
+    .gallery-container { flex: 1; overflow-y: auto; padding: 24px; max-width: 1200px; width: 100%; margin: 0 auto; }
+    .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+    .gallery-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+    .gallery-media { background: #000; height: 220px; display: grid; place-items: center; }
+    .gallery-media video { width: 100%; height: 100%; object-fit: contain; }
+    .gallery-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; }
+    .gallery-prompt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    @media (max-width: 820px) { .sidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">AI</div>
+      <div>
+        <h1>Visual Studio Pro</h1>
+        <p>Open-Source • Auto-Rotácia • IndexedDB</p>
+      </div>
+    </div>
+
+    <!-- Ročná kreditná peňaženka -->
+    <div class="credit-card">
+      <div class="credit-top">
+        <span>⚡ Ročný Kredit Chatu</span>
+        <span id="creditResetBadge" style="color:var(--gold);font-weight:600;">365d</span>
+      </div>
+      <div class="credit-amount" id="creditBalanceText">9 600 000</div>
+      <div class="credit-bar-bg">
+        <div class="credit-bar-fill" id="creditBarFill"></div>
+      </div>
+      <div class="credit-sub">
+        <span>Max: 9.6M / rok</span>
+        <span id="creditResetDateText">Obnova za 365 dní</span>
+      </div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-view="chatView">💬 Chat Studio</button>
+      <button class="nav-tab" data-view="galleryView">🎬 Galéria (<span id="galleryCount">0</span>)</button>
+    </div>
+
+    <button class="btn-new-chat" id="newChatBtn">+ Nový chat</button>
+
+    <div class="chat-list" id="chatList"></div>
+
+    <div class="db-card">
+      <div class="db-card-row"><span>Databáza</span><strong>IndexedDB v2</strong></div>
+      <div class="db-card-row"><span>Uložené videá</span><strong id="dbVideoCount">0</strong></div>
+      <div class="db-card-row"><span>Veľkosť</span><strong id="dbSizeText">0 MB</strong></div>
+      <button class="btn-ghost" id="clearDbBtn" style="margin-top:4px;color:#fca5a5;">Vymazať dáta (ponechať kredity)</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <select id="engineSelect" class="select-pill">
+          <option value="auto-pool">♾️ Auto-Rotácia (7 Open-Source Serverov bez prestávky)</option>
+          <option value="local-uncensored">🔓 Vlastný / Lokálny GPU Server (0 limitov, urobí hocičo)</option>
+          <option value="wan-fast">Wan 2.2 Fast 14B (HF Open Source)</option>
+          <option value="wan-dream">Wan 2.2 Dream FP8 (HF Open Source)</option>
+          <option value="wan-faster">Wan 2.2 AOTI Faster (HF Open Source)</option>
+          <option value="framepack-f1">FramePack-F1 (HF Open Source)</option>
+          <option value="ltx-hf">LTX-Video Distilled (HF Open Source)</option>
+          <option value="puter-wan">Wan 2.2 I2V — Puter.js</option>
+          <option value="t2v-auto-pool">📝 Text → Video: Auto-Rotácia Open-Source (len z promptu, bez kľúča)</option>
+          <option value="t2v-ltx25">📝 Text → Video: LTX-2.5 Distilled (HF ZeroGPU, bez kľúča)</option>
+          <option value="t2v-ltx23">📝 Text → Video: LTX-2.3 Turbo (HF ZeroGPU, bez kľúča)</option>
+          <option value="t2v-wan5b">📝 Text → Video: Wan 2.2 TI2V 5B (HF ZeroGPU, bez kľúča)</option>
+          <option value="t2v-puter">📝 Text → Video: Wan 2.7 T2V — Puter.js (bez API kľúča)</option>
+        </select>
+
+        <div class="ratio-switch" id="ratioSwitch">
+          <button type="button" class="ratio-btn active" data-ratio="16:9"><span class="ratio-box r169"></span> 16:9</button>
+          <button type="button" class="ratio-btn" data-ratio="9:16"><span class="ratio-box r916"></span> 9:16</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn-ghost" id="toggleSettingsBtn">⚙️ Nastavenia & Lokálny Server</button>
+        <button class="btn-ghost" id="mobileGalleryBtn">🎬 Galéria</button>
+      </div>
+    </header>
+
+    <div class="settings-bar" id="settingsBar">
+      <div class="setting-group">
+        <label for="durationInput">Dĺžka (s):</label>
+        <input id="durationInput" class="input-mini" type="number" min="1.5" max="10" step="0.5" value="3.5" style="width:70px;" />
+      </div>
+      <div class="setting-group">
+        <label for="stepsInput">Kroky:</label>
+        <input id="stepsInput" class="input-mini" type="number" min="4" max="25" step="1" value="6" style="width:65px;" />
+      </div>
+      <div class="setting-group">
+        <label for="customServerInput">Lokálny / Vlastný Gradio URL alebo Space:</label>
+        <input id="customServerInput" class="input-mini" type="text" placeholder="http://127.0.0.1:7860 alebo autor/space" style="width:240px;" />
+      </div>
+      <div class="setting-group">
+        <label for="hfTokenInput">HF Token (nepovinné):</label>
+        <input id="hfTokenInput" class="input-mini" type="password" placeholder="voliteľné" style="width:130px;" />
+      </div>
+    </div>
+
+    <section class="view active" id="chatView">
+      <div class="messages" id="messagesContainer"></div>
+
+      <div class="composer-shell">
+        <div class="composer" id="dropZone">
+          <div class="composer-top">
+            <input type="file" id="imageInput" accept="image/png,image/jpeg,image/webp" hidden />
+            <button type="button" class="btn-ghost" id="pickImageBtn">📷 Vložiť fotku (alebo Ctrl+V)</button>
+
+            <div class="upload-preview" id="uploadPreview" style="display:none;">
+              <div class="preview-thumb r169" id="previewThumbBox">
+                <img id="previewThumbImg" alt="Náhľad" />
+              </div>
+              <div style="font-size:12px;">
+                <div id="previewFileName" style="font-weight:600;">fotka.jpg</div>
+                <div id="previewRatioInfo" style="color:var(--muted);">Orezané na 16:9</div>
+              </div>
+              <button type="button" class="chat-item-del" id="removeImgBtn">✕</button>
+            </div>
+          </div>
+
+          <div class="composer-bottom">
+            <textarea id="promptInput" placeholder="Napíš prompt (s fotkou = oživí fotku, bez fotky = vygeneruje video len z textu)..."></textarea>
+            <button type="button" class="btn-primary" id="generateBtn">
+              <span>✨ Generate video (-100 ⚡)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="galleryView">
+      <div class="gallery-container">
+        <div class="gallery-header">
+          <div>
+            <h2>Galéria vizuálov (IndexedDB)</h2>
+            <p style="color:var(--muted);font-size:13px;">Všetky vygenerované videá uložené lokálne v prehliadači.</p>
+          </div>
+          <button class="btn-ghost" id="backToChatBtn">← Späť do chatu</button>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://js.puter.com/v2/"></script>
+
+  <script type="module">
+    import { Client, handle_file } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js";
+
+    /* ==========================================
+       1. INDEXEDDB + 9.6M ROČNÉ KREDITY
+    =========================================== */
+    const DB_NAME = "AIVideoStudioDB";
+    const DB_VERSION = 2;
+    const ANNUAL_CREDITS = 9_600_000;
+    const COST_PER_VIDEO = 100;
+    const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("chats")) db.createObjectStore("chats", { keyPath: "id" });
+          if (!db.objectStoreNames.contains("messages")) {
+            const msgStore = db.createObjectStore("messages", { keyPath: "id" });
+            msgStore.createIndex("by_chatId", "chatId", { unique: false });
+          }
+          if (!db.objectStoreNames.contains("visuals")) db.createObjectStore("visuals", { keyPath: "id" });
+          if (!db.objectStoreNames.contains("wallet")) db.createObjectStore("wallet", { keyPath: "id" });
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbPut(storeName, value) {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readwrite");
+        tx.objectStore(storeName).put(value);
+        tx.oncomplete = () => resolve(value);
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    async function dbGet(storeName, key) {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readonly");
+        const req = tx.objectStore(storeName).get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbGetAll(storeName) {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readonly");
+        const req = tx.objectStore(storeName).getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbGetMessagesByChat(chatId) {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction("messages", "readonly");
+        const req = tx.objectStore("messages").index("by_chatId").getAll(chatId);
+        req.onsuccess = () => resolve((req.result || []).sort((a, b) => a.createdAt - b.createdAt));
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function dbDelete(storeName, key) {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, "readwrite");
+        tx.objectStore(storeName).delete(key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    async function dbClearContentOnly() {
+      const db = await openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(["chats", "messages", "visuals"], "readwrite");
+        tx.objectStore("chats").clear();
+        tx.objectStore("messages").clear();
+        tx.objectStore("visuals").clear();
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    // Ročný cyklus kreditov (9 600 000 / rok -> po roku sa automaticky obnovia)
+    async function getOrRenewWallet() {
+      const now = Date.now();
+      let wallet = await dbGet("wallet", "main");
+      if (!wallet || now >= wallet.expiresAt) {
+        wallet = {
+          id: "main",
+          credits: ANNUAL_CREDITS,
+          maxCredits: ANNUAL_CREDITS,
+          cycleStart: now,
+          expiresAt: now + ONE_YEAR_MS,
+          totalGenerated: wallet?.totalGenerated || 0
+        };
+        await dbPut("wallet", wallet);
+      }
+      return wallet;
+    }
+
+    async function spendCredits(amount) {
+      const wallet = await getOrRenewWallet();
+      if (wallet.credits < amount) {
+        throw new Error(`Nedostatok ročných kreditov (${wallet.credits.toLocaleString("sk-SK")}). Kredity sa obnovia po uplynutí ročného cyklu.`);
+      }
+      wallet.credits -= amount;
+      wallet.totalGenerated += 1;
+      await dbPut("wallet", wallet);
+      return wallet;
+    }
+
+    async function refundCredits(amount) {
+      const wallet = await getOrRenewWallet();
+      wallet.credits = Math.min(ANNUAL_CREDITS, wallet.credits + amount);
+      await dbPut("wallet", wallet);
+      return wallet;
+    }
+
+    /* ==========================================
+       2. OPEN-SOURCE POOL & STATE
+    =========================================== */
+    const OPEN_SOURCE_POOL = [
+      { id: "prithivMLmods/Wan2.2-Fast", label: "Wan 2.2 Fast 14B" },
+      { id: "zerogpu-aoti/wan2-2-fp8da-aoti-faster", label: "Wan 2.2 AOTI Faster" },
+      { id: "dream2589632147/Dream-wan2-2-fp8da-aoti-preview-2", label: "Dream Wan 2.2 FP8" },
+      { id: "r3gm/wan2-2-fp8da-aoti-preview", label: "Wan 2.2 Preview" },
+      { id: "OpenKing/wan2-video-generation", label: "OpenKing Wan 2.2" },
+      { id: "linoyts/FramePack-F1", label: "FramePack-F1" },
+      { id: "Lightricks/ltx-video-distilled", label: "LTX-Video Distilled" }
+    ];
+
+    const T2V_OPEN_SOURCE_POOL = [
+      { id: "Lightricks/LTX-2.5", label: "LTX-2.5 Distilled (T2V)" },
+      { id: "rahul7star/LTX-2.3-turbo", label: "LTX-2.3 Turbo (T2V)" },
+      { id: "KingNish/wan2-2-fast", label: "Wan 2.2 TI2V 5B (T2V)" },
+      { id: "Upsampler/wan-2-2-5b-video", label: "Wan 2.2 5B Video (T2V)" },
+      { id: "Lightricks/ltx-video-distilled", label: "LTX-Video Distilled (T2V)" }
+    ];
+
+    const state = {
+      activeChatId: null,
+      aspect: "16:9",
+      rawImageFile: null,
+      croppedImageBlob: null,
+      isGenerating: false
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const uid = () => crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+    const QUICK_PROMPTS = [
+      "Pomalý filmový pohyb kamery dopredu, realistické osvetlenie, plynulý pohyb",
+      "Dynamická akčná scéna, rýchly prelet kamery, dramatické svetlo a pohyb",
+      "Jemný vietor, pohyb vlasov a očí, prirodzený výraz tváre, 4k video",
+      "Futuristické cyberpunk mesto v noci v daždi, neónové odlesky, prelet dronu"
+    ];
+
+    function formatBytes(bytes) {
+      return !bytes ? "0 MB" : (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    async function cropImageToRatio(file, ratio, targetHint = "") {
+      const img = await new Promise((resolve, reject) => {
+        const i = new Image();
+        i.onload = () => resolve(i);
+        i.onerror = reject;
+        i.src = URL.createObjectURL(file);
+      });
+
+      let targetW = ratio === "16:9" ? 832 : 464;
+      let targetH = ratio === "16:9" ? 464 : 832;
+
+      if (targetHint.includes("ltx")) {
+        targetW = ratio === "16:9" ? 704 : 384;
+        targetH = ratio === "16:9" ? 384 : 672;
+      } else if (targetHint.includes("puter")) {
+        targetW = ratio === "16:9" ? 1280 : 720;
+        targetH = ratio === "16:9" ? 720 : 1280;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext("2d");
+
+      const targetAspect = targetW / targetH;
+      const srcAspect = img.width / img.height;
+      let sx = 0, sy = 0, sw = img.width, sh = img.height;
+
+      if (srcAspect > targetAspect) {
+        sw = img.height * targetAspect;
+        sx = (img.width - sw) / 2;
+      } else {
+        sh = img.width / targetAspect;
+        sy = (img.height - sh) / 2;
+      }
+
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
+      URL.revokeObjectURL(img.src);
+      return new Promise((resolve) => canvas.toBlob((b) => resolve(b), "image/jpeg", 0.92));
+    }
+
+    async function refreshImagePreview() {
+      if (!state.rawImageFile) {
+        $("uploadPreview").style.display = "none";
+        return;
+      }
+      const engine = $("engineSelect").value;
+      const blob = await cropImageToRatio(state.rawImageFile, state.aspect, engine);
+      state.croppedImageBlob = blob;
+
+      $("previewThumbImg").src = URL.createObjectURL(blob);
+      $("previewThumbBox").className = `preview-thumb ${state.aspect === "16:9" ? "r169" : "r916"}`;
+      $("previewFileName").textContent = state.rawImageFile.name || "fotka.jpg";
+      $("previewRatioInfo").textContent = `Orezané na ${state.aspect}`;
+      $("uploadPreview").style.display = "flex";
+    }
+
+    function setUploadedImage(file) {
+      if (!file || !file.type.startsWith("image/")) return;
+      state.rawImageFile = file;
+      refreshImagePreview();
+    }
+
+    function extractVideoUrl(data) {
+      if (!data) return null;
+      const items = Array.isArray(data) ? data : [data];
+      for (const item of items) {
+        if (!item) continue;
+        if (typeof item === "string" && (item.includes(".mp4") || item.includes(".webm") || item.startsWith("http"))) return item;
+        if (item?.video?.url) return item.video.url;
+        if (item?.url && (item.url.includes(".mp4") || item.url.includes(".webm") || item?.mime_type?.includes("video"))) return item.url;
+        if (item?.value?.url) return item.value.url;
+        if (item?.url) return item.url;
+      }
+      return null;
+    }
+
+    /* ==========================================
+       3. ADAPTÍVNY GRADIO & POOL RUNNER
+    =========================================== */
+    async function runGradioSpace({ spaceOrUrl, imageBlob, prompt, aspect, duration, steps, hfToken, onStatus }) {
+      onStatus(`Pripájam sa na: ${spaceOrUrl}...`);
+      const options = { events: ["data", "status"] };
+      if (hfToken) options.token = hfToken;
+
+      const app = await Client.connect(spaceOrUrl, options);
+      const apiInfo = await app.view_api();
+      const endpoints = apiInfo?.named_endpoints || {};
+
+      const endpointName =
+        (!imageBlob && Object.keys(endpoints).find((k) => k.includes("t2v") || k.includes("text"))) ||
+        Object.keys(endpoints).find((k) => k.includes("generate_video")) ||
+        Object.keys(endpoints).find((k) => k === "/generate" || k === "/process" || k === "/infer") ||
+        Object.keys(endpoints).find((k) => k.includes("generate") || k.includes("predict")) ||
+        Object.keys(endpoints)[0];
+
+      if (!endpointName) throw new Error(`Server ${spaceOrUrl} nemá verejný endpoint.`);
+
+      const paramsMeta = endpoints[endpointName]?.parameters || [];
+      const filePayload = imageBlob ? (typeof handle_file === "function" ? handle_file(imageBlob) : imageBlob) : null;
+      const w = spaceOrUrl.toLowerCase().includes("ltx") ? (aspect === "16:9" ? 704 : 384) : (aspect === "16:9" ? 832 : 464);
+      const h = spaceOrUrl.toLowerCase().includes("ltx") ? (aspect === "16:9" ? 384 : 672) : (aspect === "16:9" ? 464 : 832);
+      const seed = Math.floor(Math.random() * 1000000);
+
+      const payload = {};
+      for (const p of paramsMeta) {
+        const key = p.parameter_name || p.label;
+        const k = (key || "").toLowerCase();
+
+        if (["input_image", "image", "input_image_filepath", "start_image", "img", "first_frame"].includes(k) || p.component === "Image") {
+          payload[key] = filePayload;
+        } else if (k === "prompt" || k === "positive_prompt") {
+          payload[key] = prompt;
+        } else if (k === "negative_prompt") {
+          payload[key] = "";
+        } else if (["duration_seconds", "duration_ui", "duration", "total_second_length"].includes(k)) {
+          payload[key] = duration;
+        } else if (k === "steps" || k === "num_inference_steps") {
+          payload[key] = steps;
+        } else if (k === "width" || k === "width_ui" || k === "output_width") {
+          payload[key] = w;
+        } else if (k === "height" || k === "height_ui" || k === "output_height") {
+          payload[key] = h;
+        } else if (k === "aspect_ratio" || k === "ratio") {
+          payload[key] = aspect;
+        } else if (k === "mode") {
+          payload[key] = imageBlob ? "image-to-video" : "text-to-video";
+        } else if (k === "randomize_seed") {
+          payload[key] = true;
+        } else if (k === "seed" || k === "seed_ui") {
+          payload[key] = seed;
+        } else if (p.parameter_has_default) {
+          payload[key] = p.parameter_default;
+        }
+      }
+
+      onStatus(`Odosielam na GPU (${spaceOrUrl})...`);
+      const job = app.submit(endpointName, payload);
+      let resultData = null;
+
+      for await (const msg of job) {
+        if (msg.type === "status") {
+          if (msg.stage === "pending") {
+            const pos = msg.position != null ? `Fronta #${msg.position + 1}` : "Čakám v rade";
+            const eta = msg.eta ? ` (~${Math.round(msg.eta)} s)` : "";
+            onStatus(`${spaceOrUrl}: ${pos}${eta}`);
+          } else if (msg.stage === "generating") {
+            onStatus(`${spaceOrUrl}: Generujem snímky videa na GPU...`);
+          } else if (msg.stage === "error") {
+            throw new Error(msg.message || `Chyba na serveri ${spaceOrUrl}`);
+          }
+        } else if (msg.type === "data") {
+          resultData = msg.data;
+        }
+      }
+
+      const videoUrl = extractVideoUrl(resultData);
+      if (!videoUrl) throw new Error(`${spaceOrUrl} nevrátil video súbor.`);
+
+      onStatus("Sťahujem výsledné video do IndexedDB...");
+      let videoBlob = null;
+      try {
+        const res = await fetch(videoUrl);
+        if (res.ok) videoBlob = await res.blob();
+      } catch (e) { console.warn("Blob fetch fallback:", e); }
+
+      return { videoUrl, videoBlob, usedModel: spaceOrUrl };
+    }
+
+    async function runPuter({ imageBlob, prompt, aspect, onStatus }) {
+      if (typeof puter === "undefined" || !puter?.ai?.txt2vid) throw new Error("Puter.js nie je dostupný.");
+      const size = aspect === "16:9" ? "1280x720" : "720x1280";
+      let videoEl;
+      let usedModelLabel;
+
+      if (imageBlob) {
+        onStatus("Generujem cez Puter.js (Wan 2.2 I2V)...");
+        usedModelLabel = "Puter.js Wan 2.2 I2V";
+        videoEl = await puter.ai.txt2vid(prompt, {
+          model: "Wan-AI/Wan2.2-I2V-A14B",
+          input_reference: imageBlob,
+          size
+        });
+      } else {
+        onStatus("Generujem cez Puter.js (Wan 2.7 Text → Video)...");
+        try {
+          usedModelLabel = "Puter.js Wan 2.7 T2V";
+          videoEl = await puter.ai.txt2vid(prompt, {
+            model: "wan-ai/wan2.7-t2v",
+            size
+          });
+        } catch (err) {
+          usedModelLabel = "Puter.js Wan 2.2 T2V";
+          videoEl = await puter.ai.txt2vid(prompt, {
+            model: "Wan-AI/Wan2.2-T2V-A14B",
+            size
+          });
+        }
+      }
+
+      const videoUrl = videoEl?.src || videoEl?.currentSrc;
+      if (!videoUrl) throw new Error("Puter.js nevrátil video.");
+      let videoBlob = null;
+      try {
+        const res = await fetch(videoUrl);
+        if (res.ok) videoBlob = await res.blob();
+      } catch (e) {}
+      return { videoUrl, videoBlob, usedModel: usedModelLabel };
+    }
+
+    /* ==========================================
+       4. RENDERING
+    =========================================== */
+    async function ensureActiveChat() {
+      const chats = (await dbGetAll("chats")).sort((a, b) => b.updatedAt - a.updatedAt);
+      if (chats.length > 0 && !state.activeChatId) state.activeChatId = chats[0].id;
+      else if (chats.length === 0) {
+        const c = { id: uid(), title: "Nový AI vizuál", createdAt: Date.now(), updatedAt: Date.now() };
+        await dbPut("chats", c);
+        state.activeChatId = c.id;
+      }
+    }
+
+    async function renderWallet() {
+      const wallet = await getOrRenewWallet();
+      const pct = Math.max(0, Math.min(100, (wallet.credits / wallet.maxCredits) * 100));
+      const daysLeft = Math.max(0, Math.ceil((wallet.expiresAt - Date.now()) / (24 * 60 * 60 * 1000)));
+      $("creditBalanceText").textContent = wallet.credits.toLocaleString("sk-SK");
+      $("creditBarFill").style.width = `${pct}%`;
+      $("creditResetBadge").textContent = `${daysLeft}d`;
+      $("creditResetDateText").textContent = `Obnova za ${daysLeft} dní`;
+    }
+
+    async function renderSidebar() {
+      await renderWallet();
+      const chats = (await dbGetAll("chats")).sort((a, b) => b.updatedAt - a.updatedAt);
+      const list = $("chatList");
+      list.innerHTML = "";
+
+      for (const c of chats) {
+        const item = document.createElement("div");
+        item.className = `chat-item ${c.id === state.activeChatId ? "active" : ""}`;
+        item.innerHTML = `
+          <span class="chat-item-title">🎞️ ${escapeHtml(c.title)}</span>
+          <button class="chat-item-del" title="Zmazať">✕</button>
+        `;
+        item.addEventListener("click", async (e) => {
+          if (e.target.closest(".chat-item-del")) {
+            await dbDelete("chats", c.id);
+            const msgs = await dbGetMessagesByChat(c.id);
+            for (const m of msgs) await dbDelete("messages", m.id);
+            if (state.activeChatId === c.id) state.activeChatId = null;
+            await renderAll();
+            return;
+          }
+          state.activeChatId = c.id;
+          switchView("chatView");
+          await renderAll();
+        });
+        list.appendChild(item);
+      }
+
+      const visuals = await dbGetAll("visuals");
+      const totalBytes = visuals.reduce((acc, v) => acc + (v.sizeBytes || 0), 0);
+      $("galleryCount").textContent = visuals.length;
+      $("dbVideoCount").textContent = visuals.length;
+      $("dbSizeText").textContent = formatBytes(totalBytes);
+    }
+
+    function escapeHtml(str = "") {
+      return str.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+    }
+
+    async function renderMessages() {
+      const container = $("messagesContainer");
+      const msgs = await dbGetMessagesByChat(state.activeChatId);
+      container.innerHTML = "";
+
+      if (msgs.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.innerHTML = `
+          <h2>Tvoj AI Video Chat — 9 600 000 Kreditov / Rok</h2>
+          <p>
+            Vlož fotku (alebo píš iba textový prompt pre <strong>Text → Video</strong>), zvoľ <strong>16:9</strong> alebo <strong>9:16</strong> a napíš ľubovoľný popis.
+            Režim <strong>Auto-Rotácia</strong> automaticky prepína medzi open-source modelmi, ak má niektorý z nich plnú frontu alebo limit.
+            Pre úplne <strong>0 limitov a 0 cenzúry</strong> pripoj vlastný lokálny GPU server v <em>Nastaveniach</em>.
+          </p>
+          <div class="prompt-chips">
+            ${QUICK_PROMPTS.map((p) => `<button type="button" class="chip">${escapeHtml(p)}</button>`).join("")}
+          </div>
+        `;
+        empty.querySelectorAll(".chip").forEach((btn) => {
+          btn.addEventListener("click", () => { $("promptInput").value = btn.textContent; $("promptInput").focus(); });
+        });
+        container.appendChild(empty);
+        return;
+      }
+
+      for (const m of msgs) {
+        const row = document.createElement("div");
+        row.className = `msg ${m.role}`;
+        const ratioCls = m.aspect === "9:16" ? "r916" : "r169";
+
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+        avatar.textContent = m.role === "user" ? "TY" : "AI";
+
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+
+        if (m.role === "user") {
+          bubble.innerHTML = `<div class="meta-badges">
+            <span class="badge">${escapeHtml(m.aspect)}</span>
+            ${m.inputImageBlob ? "" : '<span class="badge">📝 Text → Video</span>'}
+            <span class="badge gold">-${COST_PER_VIDEO} ⚡</span>
+          </div>`;
+          if (m.inputImageBlob) {
+            const imgWrap = document.createElement("div");
+            imgWrap.className = `msg-img ${ratioCls}`;
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(m.inputImageBlob);
+            imgWrap.appendChild(img);
+            bubble.appendChild(imgWrap);
+          }
+          const txt = document.createElement("div");
+          txt.style.cssText = "font-size:14px;line-height:1.45;";
+          txt.textContent = m.text;
+          bubble.appendChild(txt);
+        } else {
+          if (m.status === "pending") {
+            bubble.innerHTML = `<div class="status-line"><div class="spinner"></div><span>${escapeHtml(m.statusText || "Spúšťam...")}</span></div>`;
+          } else if (m.status === "error") {
+            bubble.innerHTML = `<div class="error-box">
+              <strong>Upozornenie:</strong> ${escapeHtml(m.errorText)}
+              <div style="margin-top:6px;font-size:12px;">Kredity (-${COST_PER_VIDEO} ⚡) boli automaticky vrátené späť na tvoj ročný účet.</div>
+            </div>`;
+          } else {
+            const videoSrc = m.videoBlob ? URL.createObjectURL(m.videoBlob) : m.videoUrl;
+            bubble.innerHTML = `<div class="meta-badges">
+              <span class="badge ok">✓ Uložené v IndexedDB</span>
+              <span class="badge">${escapeHtml(m.aspect)}</span>
+              <span class="badge">${escapeHtml(m.usedModel || m.engineLabel)}</span>
+            </div>`;
+            const vWrap = document.createElement("div");
+            vWrap.className = `video-wrap ${ratioCls}`;
+            const video = document.createElement("video");
+            video.src = videoSrc; video.controls = true; video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true;
+            vWrap.appendChild(video);
+            bubble.appendChild(vWrap);
+
+            const dlBtn = document.createElement("a");
+            dlBtn.className = "btn-ghost";
+            dlBtn.style.alignSelf = "flex-start";
+            dlBtn.style.textDecoration = "none";
+            dlBtn.href = videoSrc;
+            dlBtn.download = `ai-visual-${m.id.slice(0,6)}.mp4`;
+            dlBtn.textContent = "⬇ Stiahnuť MP4";
+            bubble.appendChild(dlBtn);
+          }
+        }
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+        container.appendChild(row);
+      }
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function renderGallery() {
+      const visuals = (await dbGetAll("visuals")).sort((a, b) => b.createdAt - a.createdAt);
+      const grid = $("galleryGrid");
+      grid.innerHTML = visuals.length ? "" : `<p style="color:var(--muted);">Zatiaľ žiadne videá v IndexedDB.</p>`;
+
+      for (const v of visuals) {
+        const src = v.videoBlob ? URL.createObjectURL(v.videoBlob) : v.videoUrl;
+        const card = document.createElement("div");
+        card.className = "gallery-card";
+        card.innerHTML = `
+          <div class="gallery-media"><video src="${src}" controls loop muted playsinline></video></div>
+          <div class="gallery-body">
+            <div class="meta-badges"><span class="badge">${escapeHtml(v.aspect)}</span><span class="badge">${formatBytes(v.sizeBytes)}</span></div>
+            <div class="gallery-prompt">${escapeHtml(v.prompt)}</div>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+              <a class="btn-ghost" style="flex:1;text-align:center;text-decoration:none;" href="${src}" download="visual-${v.id.slice(0,6)}.mp4">⬇ MP4</a>
+              <button class="btn-ghost del-btn" style="color:#fca5a5;">Zmazať</button>
+            </div>
+          </div>`;
+        card.querySelector(".del-btn").addEventListener("click", async () => { await dbDelete("visuals", v.id); await renderAll(); });
+        grid.appendChild(card);
+      }
+    }
+
+    async function renderAll() {
+      await ensureActiveChat();
+      await renderSidebar();
+      await renderMessages();
+      await renderGallery();
+    }
+
+    function switchView(viewId) {
+      document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
+      $(viewId).classList.add("active");
+      document.querySelectorAll(".nav-tab").forEach((t) => t.classList.toggle("active", t.dataset.view === viewId));
+    }
+
+    /* ==========================================
+       5. GENERATE ORCHESTRATOR
+    =========================================== */
+    async function handleGenerate() {
+      if (state.isGenerating) return;
+      const prompt = $("promptInput").value.trim();
+      if (!prompt) return alert("Napíš textový prompt pre vygenerovanie videa.");
+
+      const engine = $("engineSelect").value;
+      const isExplicitT2V = engine.startsWith("t2v-");
+      const inputBlob = isExplicitT2V ? null : state.croppedImageBlob;
+
+      const aspect = state.aspect;
+      const duration = parseFloat($("durationInput").value) || 3.5;
+      const steps = parseInt($("stepsInput").value, 10) || 6;
+      const hfToken = $("hfTokenInput").value.trim();
+      const customServer = $("customServerInput").value.trim();
+
+      try {
+        await spendCredits(COST_PER_VIDEO);
+      } catch (err) {
+        return alert(err.message);
+      }
+
+      state.isGenerating = true;
+      $("generateBtn").disabled = true;
+
+      await dbPut("messages", {
+        id: uid(), chatId: state.activeChatId, role: "user",
+        text: prompt, aspect, inputImageBlob: inputBlob, createdAt: Date.now()
+      });
+
+      const chats = await dbGetAll("chats");
+      const currentChat = chats.find((c) => c.id === state.activeChatId);
+      if (currentChat) {
+        if (currentChat.title === "Nový AI vizuál") currentChat.title = prompt.slice(0, 36);
+        currentChat.updatedAt = Date.now();
+        await dbPut("chats", currentChat);
+      }
+
+      const assistantMsg = {
+        id: uid(), chatId: state.activeChatId, role: "assistant",
+        status: "pending", statusText: "Štartujem generovanie...", aspect, createdAt: Date.now() + 1
+      };
+      await dbPut("messages", assistantMsg);
+      $("promptInput").value = "";
+      await renderAll();
+
+      const updateStatus = async (text) => {
+        assistantMsg.statusText = text;
+        await dbPut("messages", assistantMsg);
+        await renderMessages();
+      };
+
+      try {
+        let result = null;
+        if (engine === "puter-wan" || engine === "t2v-puter") {
+          result = await runPuter({ imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+        } else if (engine === "local-uncensored") {
+          if (!customServer) throw new Error("Zadaj adresu svojho lokálneho servera v Nastaveniach (napr. http://127.0.0.1:7860).");
+          result = await runGradioSpace({ spaceOrUrl: customServer, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus });
+        } else if (engine === "t2v-auto-pool" || (!inputBlob && engine === "auto-pool")) {
+          const errors = [];
+          for (const candidate of T2V_OPEN_SOURCE_POOL) {
+            try {
+              await updateStatus(`Text → Video Auto-Rotácia: skúšam ${candidate.label}...`);
+              result = await runGradioSpace({
+                spaceOrUrl: candidate.id, imageBlob: null, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus
+              });
+              break;
+            } catch (err) {
+              errors.push(`${candidate.label}: ${err.message}`);
+            }
+          }
+          if (!result) {
+            try {
+              await updateStatus("Text → Video Auto-Rotácia: prepínam na Puter.js Wan 2.7 T2V...");
+              result = await runPuter({ imageBlob: null, prompt, aspect, onStatus: updateStatus });
+            } catch (pErr) {
+              errors.push(`Puter.js: ${pErr.message}`);
+              throw new Error("Všetky verejné bezplatné Text-to-Video servery sú momentálne vyťažené alebo dosiahli IP limit.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
+            }
+          }
+        } else if (engine === "auto-pool") {
+          const errors = [];
+          for (const candidate of OPEN_SOURCE_POOL) {
+            try {
+              await updateStatus(`Auto-Rotácia: skúšam ${candidate.label}...`);
+              result = await runGradioSpace({
+                spaceOrUrl: candidate.id, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus
+              });
+              break;
+            } catch (err) {
+              errors.push(`${candidate.label}: ${err.message}`);
+            }
+          }
+          if (!result) {
+            try {
+              await updateStatus("Auto-Rotácia: prepínam na Puter.js Wan 2.2...");
+              result = await runPuter({ imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+            } catch (pErr) {
+              errors.push(`Puter.js: ${pErr.message}`);
+              throw new Error("Všetky verejné bezplatné servery sú momentálne vyťažené alebo dosiahli IP limit. Pre 100 % prevádzku bez limitov pripoj vlastný lokálny GPU server.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
+            }
+          }
+        } else {
+          const map = {
+            "wan-fast": "prithivMLmods/Wan2.2-Fast",
+            "wan-dream": "dream2589632147/Dream-wan2-2-fp8da-aoti-preview-2",
+            "wan-faster": "zerogpu-aoti/wan2-2-fp8da-aoti-faster",
+            "framepack-f1": "linoyts/FramePack-F1",
+            "ltx-hf": "Lightricks/ltx-video-distilled",
+            "t2v-ltx25": "Lightricks/LTX-2.5",
+            "t2v-ltx23": "rahul7star/LTX-2.3-turbo",
+            "t2v-wan5b": "KingNish/wan2-2-fast"
+          };
+          result = await runGradioSpace({ spaceOrUrl: map[engine], imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus });
+        }
+
+        assistantMsg.status = "done";
+        assistantMsg.videoBlob = result.videoBlob;
+        assistantMsg.videoUrl = result.videoUrl;
+        assistantMsg.usedModel = result.usedModel;
+        await dbPut("messages", assistantMsg);
+
+        await dbPut("visuals", {
+          id: uid(), chatId: state.activeChatId, prompt, aspect,
+          videoBlob: result.videoBlob, videoUrl: result.videoUrl,
+          sizeBytes: result.videoBlob ? result.videoBlob.size : 0, createdAt: Date.now()
+        });
+      } catch (err) {
+        await refundCredits(COST_PER_VIDEO);
+        assistantMsg.status = "error";
+        assistantMsg.errorText = err?.message || String(err);
+        await dbPut("messages", assistantMsg);
+      } finally {
+        state.isGenerating = false;
+        $("generateBtn").disabled = false;
+        await renderAll();
+      }
+    }
+
+    /* ==========================================
+       6. EVENTS
+    =========================================== */
+    $("newChatBtn").addEventListener("click", async () => {
+      const chat = { id: uid(), title: "Nový AI vizuál", createdAt: Date.now(), updatedAt: Date.now() };
+      await dbPut("chats", chat);
+      state.activeChatId = chat.id;
+      switchView("chatView");
+      await renderAll();
+    });
+    document.querySelectorAll(".nav-tab").forEach((t) => t.addEventListener("click", () => switchView(t.dataset.view)));
+    $("mobileGalleryBtn").addEventListener("click", () => switchView("galleryView"));
+    $("backToChatBtn").addEventListener("click", () => switchView("chatView"));
+    $("toggleSettingsBtn").addEventListener("click", () => $("settingsBar").classList.toggle("open"));
+
+    $("ratioSwitch").querySelectorAll(".ratio-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        $("ratioSwitch").querySelectorAll(".ratio-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        state.aspect = btn.dataset.ratio;
+        await refreshImagePreview();
+      });
+    });
+
+    $("engineSelect").addEventListener("change", () => {
+      if ($("engineSelect").value === "local-uncensored") $("settingsBar").classList.add("open");
+      refreshImagePreview();
+    });
+
+    $("pickImageBtn").addEventListener("click", () => $("imageInput").click());
+    $("imageInput").addEventListener("change", (e) => setUploadedImage(e.target.files[0]));
+    $("removeImgBtn").addEventListener("click", () => {
+      state.rawImageFile = null; state.croppedImageBlob = null; $("imageInput").value = ""; refreshImagePreview();
+    });
+
+    const dropZone = $("dropZone");
+    dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("dragover"); });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+    dropZone.addEventListener("drop", (e) => { e.preventDefault(); dropZone.classList.remove("dragover"); if (e.dataTransfer.files[0]) setUploadedImage(e.dataTransfer.files[0]); });
+    window.addEventListener("paste", (e) => {
+      for (const item of (e.clipboardData?.items || [])) {
+        if (item.type.startsWith("image/")) { setUploadedImage(item.getAsFile()); break; }
+      }
+    });
+
+    $("generateBtn").addEventListener("click", handleGenerate);
+    $("promptInput").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleGenerate(); } });
+    $("clearDbBtn").addEventListener("click", async () => {
+      if (confirm("Vymazať všetky chaty a videá z IndexedDB? (Ročné kredity ostanú zachované)")) {
+        await dbClearContentOnly(); state.activeChatId = null; await renderAll();
+      }
+    });
+
+    await renderAll();
+  </script>
+</body>
+</html>
