@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Visual Studio — 9.6M Credit • Open-Source Video & Music</title>
+  <title>AI Visual Studio — 9.6M Credit • Open-Source Video, Music, Image & Chat</title>
   <style>
     :root {
       --bg: #080a0f;
@@ -148,7 +148,7 @@
 
     .ratio-switch {
       display: inline-flex; background: var(--bg-elev);
-      border: 1px solid var(--border-strong); border-radius: 11px; padding: 3px; gap: 3px;
+      border: 1px solid var(--border-strong); border-radius: 11px; padding: 3px; gap: 3px; align-items: center;
     }
     .ratio-btn {
       border: none; background: transparent; color: var(--muted);
@@ -159,6 +159,24 @@
     .ratio-box { border: 1.5px solid currentColor; border-radius: 2px; display: inline-block; }
     .ratio-box.r169 { width: 16px; height: 9px; }
     .ratio-box.r916 { width: 9px; height: 15px; }
+
+    .ratio-custom-input {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text);
+      width: 78px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 7px;
+      border-radius: 8px;
+      outline: none;
+      text-align: center;
+    }
+    .ratio-custom-input::placeholder { color: var(--muted); font-weight: 500; }
+    .ratio-custom-input.active {
+      background: linear-gradient(135deg, var(--accent), #5b45e0);
+      color: #fff;
+    }
 
     .btn-ghost {
       border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03);
@@ -184,7 +202,7 @@
     }
 
     .empty-state {
-      margin: auto; text-align: center; max-width: 590px; padding: 28px;
+      margin: auto; text-align: center; max-width: 620px; padding: 28px;
       border-radius: 22px; background: rgba(255,255,255,0.025); border: 1px solid var(--border);
     }
     .empty-state h2 {
@@ -226,7 +244,31 @@
     .msg-img { border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong); background: #000; }
     .msg-img.r169 { aspect-ratio: 16 / 9; width: 300px; max-width: 100%; }
     .msg-img.r916 { aspect-ratio: 9 / 16; width: 170px; }
+    .msg-img.rcustom { max-width: 300px; max-height: 280px; }
     .msg-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .msg-gen-img {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      background: #000;
+      max-width: min(520px, 100%);
+    }
+    .msg-gen-img img {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .msg-text-reply {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
 
     .video-wrap { border-radius: 14px; overflow: hidden; border: 1px solid var(--border-strong); background: #000; }
     .video-wrap.r169 { aspect-ratio: 16 / 9; width: min(480px, 100%); }
@@ -276,6 +318,7 @@
     .preview-thumb { background: #000; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-strong); }
     .preview-thumb.r169 { width: 72px; height: 40px; }
     .preview-thumb.r916 { width: 36px; height: 64px; }
+    .preview-thumb.rcustom { width: 56px; height: 56px; }
     .preview-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .composer-bottom { display: flex; gap: 10px; align-items: flex-end; }
@@ -299,7 +342,7 @@
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
     .gallery-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
     .gallery-media { background: #000; height: 220px; display: grid; place-items: center; padding: 8px; }
-    .gallery-media video { width: 100%; height: 100%; object-fit: contain; }
+    .gallery-media video, .gallery-media img { width: 100%; height: 100%; object-fit: contain; }
     .gallery-media.audio-box { background: linear-gradient(135deg, rgba(124, 92, 255, 0.16), rgba(0, 212, 255, 0.08)); }
     .gallery-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; }
     .gallery-prompt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -374,11 +417,22 @@
           <option value="music-yue2">🎵 Hudba: YuE2-3B Full Song (HF ZeroGPU, bez kľúča)</option>
           <option value="music-heartmula">🎵 Hudba: HeartMuLa Suno-Level (HF ZeroGPU, bez kľúča)</option>
           <option value="music-diffrhythm">🎵 Hudba: DiffRhythm Full Song (HF ZeroGPU, bez kľúča)</option>
+          <option value="img-auto-pool">🖼️ Obrázky (ChatGPT štýl, hry &amp; YT miniatúry): Auto-Rotácia (bez kľúča)</option>
+          <option value="img-puter-gpt">🖼️ Obrázky: ChatGPT / GPT Image 2.6 (Puter.js, bez API kľúča)</option>
+          <option value="img-puter-gemini">🖼️ Obrázky: Gemini Nano Banana (Puter.js, bez API kľúča)</option>
+          <option value="img-zimage">🖼️ Obrázky: Z-Image-Turbo (HF Open Source, bez kľúča)</option>
+          <option value="img-flux">🖼️ Obrázky: FLUX.1 Schnell (HF Open Source, bez kľúča)</option>
+          <option value="img-qwen">🖼️ Obrázky: Qwen-Image 2.1 (HF Open Source, bez kľúča)</option>
+          <option value="llm-auto">💬 Textová AI (Jazykový model): Auto-Rotácia GPT / Qwen (bez API kľúča)</option>
+          <option value="llm-puter-gpt">💬 Textová AI: ChatGPT / GPT-5.4 Nano (Puter.js, bez API kľúča)</option>
+          <option value="llm-puter-claude">💬 Textová AI: Claude 3.7 Sonnet (Puter.js, bez API kľúča)</option>
+          <option value="llm-qwen-hf">💬 Textová AI: Qwen3.8-27B Open-Source (HF ZeroGPU, bez kľúča)</option>
         </select>
 
         <div class="ratio-switch" id="ratioSwitch">
           <button type="button" class="ratio-btn active" data-ratio="16:9"><span class="ratio-box r169"></span> 16:9</button>
           <button type="button" class="ratio-btn" data-ratio="9:16"><span class="ratio-box r916"></span> 9:16</button>
+          <input id="customRatioInput" class="ratio-custom-input" type="text" placeholder="iný (1:1, 4:3)" title="Zadaj ľubovoľný pomer strán, napr. 1:1, 4:3, 3:4, 21:9, 5:4" />
         </div>
       </div>
 
@@ -433,7 +487,7 @@
           </div>
 
           <div class="composer-bottom">
-            <textarea id="promptInput" placeholder="Napíš prompt (s fotkou = oživí fotku, bez fotky = video z textu, alebo pri 🎵 Hudbe napíš štýl a text piesne)..."></textarea>
+            <textarea id="promptInput" placeholder="Napíš prompt (s fotkou = oživí fotku, bez fotky = video/obrázok z textu, pri 🎵 Hudbe = pieseň, pri 💬 Textovej AI = chat)..."></textarea>
             <button type="button" class="btn-primary" id="generateBtn">
               <span>✨ Generate (-100 ⚡)</span>
             </button>
@@ -446,8 +500,8 @@
       <div class="gallery-container">
         <div class="gallery-header">
           <div>
-            <h2>Galéria vizuálov & hudby (IndexedDB)</h2>
-            <p style="color:var(--muted);font-size:13px;">Všetky vygenerované videá a skladby uložené lokálne v prehliadači.</p>
+            <h2>Galéria vizuálov, obrázkov &amp; hudby (IndexedDB)</h2>
+            <p style="color:var(--muted);font-size:13px;">Všetky vygenerované videá, obrázky v plnej kvalite a skladby uložené lokálne v prehliadači.</p>
           </div>
           <button class="btn-ghost" id="backToChatBtn">← Späť do chatu</button>
         </div>
@@ -468,6 +522,7 @@
     const DB_VERSION = 2;
     const ANNUAL_CREDITS = 9_600_000;
     const COST_PER_VIDEO = 100;
+    const COST_PER_CHAT = 1;
     const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
     function openDB() {
@@ -617,6 +672,18 @@
       { id: "ASLP-lab/DiffRhythm", label: "DiffRhythm Full Song" }
     ];
 
+    const IMAGE_OPEN_SOURCE_POOL = [
+      { id: "mrfakename/Z-Image-Turbo", label: "Z-Image-Turbo (Open Source)" },
+      { id: "Tongyi-MAI/Z-Image-Turbo", label: "Z-Image-Turbo Official" },
+      { id: "black-forest-labs/FLUX.1-schnell", label: "FLUX.1 Schnell" },
+      { id: "Qwen/Qwen-Image-2.1", label: "Qwen-Image 2.1" }
+    ];
+
+    const LLM_OPEN_SOURCE_POOL = [
+      { id: "JonathanColetti/Qwen3.8-27B-Uncensored-Demo", label: "Qwen3.8-27B Uncensored" },
+      { id: "Qwen/Qwen3-VL-235B-A22B-Instruct-Demo", label: "Qwen3-VL-235B Instruct" }
+    ];
+
     const state = {
       activeChatId: null,
       aspect: "16:9",
@@ -630,10 +697,10 @@
 
     const QUICK_PROMPTS = [
       "Pomalý filmový pohyb kamery dopredu, realistické osvetlenie, plynulý pohyb",
-      "Dynamická akčná scéna, rýchly prelet kamery, dramatické svetlo a pohyb",
-      "Futuristické cyberpunk mesto v noci v daždi, neónové odlesky, prelet dronu",
+      "YouTube miniatúra pre herné video: šokovaný gamer, explózia v pozadí, veľký žiarivý 3D text 'TOP SECRET', ultra ostré farby, Unreal Engine 5 štýl",
+      "Herný concept art ako z AAA RPG hry: rytier v temnom lese pred žiariacim portálom, epické osvetlenie",
       "Štýl: moderný synthpop, emotívny ženský spev, 118 BPM\n[Verse]\nPod nočnou oblohou kráčame ďalej\n[Chorus]\nSvetlo v nás nikdy nezhasne",
-      "Epická filmová orchestrálna hudba s elektronikou, silné bicie, dlhá gradácia bez spevu"
+      "Ahoj! Napíš mi 5 virálnych nápadov na YouTube video o hrách a k tomu presný prompt na miniatúru."
     ];
 
     function formatBytes(bytes) {
@@ -647,7 +714,27 @@
       return `${m}:${r.toString().padStart(2, "0")}`;
     }
 
-    // Rozdelí prompt na štýl hudby + text piesne a vypočíta dĺžku (max 7:30 = 450s, môže byť menej podľa textu)
+    // Výpočet presných rozmerov (deliteľných 16) pre ĽUBOVOĽNÝ pomer strán (napr. 16:9, 9:16, 1:1, 4:3, 21:9, 5:4...)
+    function computeAspectDimensions(aspectStr, basePixels = 1024 * 1024) {
+      const m = (aspectStr || "16:9").trim().match(/^(\d+(?:\.\d+)?)\s*[:/xX]\s*(\d+(?:\.\d+)?)$/);
+      let rw = 16, rh = 9;
+      if (m) {
+        rw = Math.max(0.1, parseFloat(m[1]));
+        rh = Math.max(0.1, parseFloat(m[2]));
+      }
+      const ratio = rw / rh;
+      let w = Math.sqrt(basePixels * ratio);
+      let h = w / ratio;
+      const maxSide = 1408;
+      const minSide = 320;
+      if (w > maxSide) { h = (h * maxSide) / w; w = maxSide; }
+      if (h > maxSide) { w = (w * maxSide) / h; h = maxSide; }
+      if (w < minSide) { h = (h * minSide) / w; w = minSide; }
+      if (h < minSide) { w = (w * minSide) / h; h = minSide; }
+      const snap16 = (n) => Math.max(256, Math.min(1536, Math.round(n / 16) * 16));
+      return { w: snap16(w), h: snap16(h), ratioText: `${rw}:${rh}` };
+    }
+
     function parseMusicPrompt(rawText, maxSeconds = 450) {
       const capMax = Math.min(450, Math.max(30, maxSeconds || 450));
       const text = (rawText || "").trim();
@@ -675,7 +762,6 @@
         }
       }
 
-      // Výpočet dĺžky: 7:30 (450s) štandardne, alebo menej ak je zadaný kratší spevácky text
       let targetDuration = capMax;
       if (hasLyrics) {
         const lyricLines = lyrics.split(/\r?\n/).filter((l) => l.trim() && !/^\[.*\]$/.test(l.trim()));
@@ -701,15 +787,17 @@
         i.src = URL.createObjectURL(file);
       });
 
-      let targetW = ratio === "16:9" ? 832 : 464;
-      let targetH = ratio === "16:9" ? 464 : 832;
-
-      if (targetHint.includes("ltx")) {
-        targetW = ratio === "16:9" ? 704 : 384;
-        targetH = ratio === "16:9" ? 384 : 672;
-      } else if (targetHint.includes("puter")) {
-        targetW = ratio === "16:9" ? 1280 : 720;
-        targetH = ratio === "16:9" ? 720 : 1280;
+      let targetW, targetH;
+      if (ratio === "16:9") {
+        targetW = targetHint.includes("ltx") ? 704 : targetHint.includes("puter") ? 1280 : 832;
+        targetH = targetHint.includes("ltx") ? 384 : targetHint.includes("puter") ? 720 : 464;
+      } else if (ratio === "9:16") {
+        targetW = targetHint.includes("ltx") ? 384 : targetHint.includes("puter") ? 720 : 464;
+        targetH = targetHint.includes("ltx") ? 672 : targetHint.includes("puter") ? 1280 : 832;
+      } else {
+        const dims = computeAspectDimensions(ratio, 768 * 768);
+        targetW = dims.w;
+        targetH = dims.h;
       }
 
       const canvas = document.createElement("canvas");
@@ -731,7 +819,7 @@
 
       ctx.drawImage(img, sx, sy, sw, sh, 0, 0, targetW, targetH);
       URL.revokeObjectURL(img.src);
-      return new Promise((resolve) => canvas.toBlob((b) => resolve(b), "image/jpeg", 0.92));
+      return new Promise((resolve) => canvas.toBlob((b) => resolve(b), "image/png"));
     }
 
     async function refreshImagePreview() {
@@ -744,8 +832,8 @@
       state.croppedImageBlob = blob;
 
       $("previewThumbImg").src = URL.createObjectURL(blob);
-      $("previewThumbBox").className = `preview-thumb ${state.aspect === "16:9" ? "r169" : "r916"}`;
-      $("previewFileName").textContent = state.rawImageFile.name || "fotka.jpg";
+      $("previewThumbBox").className = `preview-thumb ${state.aspect === "16:9" ? "r169" : state.aspect === "9:16" ? "r916" : "rcustom"}`;
+      $("previewFileName").textContent = state.rawImageFile.name || "fotka.png";
       $("previewRatioInfo").textContent = `Orezané na ${state.aspect}`;
       $("uploadPreview").style.display = "flex";
     }
@@ -756,7 +844,48 @@
       refreshImagePreview();
     }
 
-    function extractMediaUrl(data, isMusic = false) {
+    function blobToDataUrl(blob) {
+      return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result);
+        r.onerror = reject;
+        r.readAsDataURL(blob);
+      });
+    }
+
+    async function imageElementToOriginalBlob(imgEl) {
+      if (!imgEl.complete) {
+        await new Promise((resolve, reject) => {
+          imgEl.onload = resolve;
+          imgEl.onerror = reject;
+        });
+      }
+      try {
+        const res = await fetch(imgEl.src);
+        if (res.ok) return await res.blob();
+      } catch (e) {
+        console.warn("Direct fetch fallback to lossless PNG:", e);
+      }
+      const c = document.createElement("canvas");
+      c.width = imgEl.naturalWidth || 1024;
+      c.height = imgEl.naturalHeight || 1024;
+      c.getContext("2d").drawImage(imgEl, 0, 0);
+      return new Promise((resolve) => c.toBlob((b) => resolve(b), "image/png"));
+    }
+
+    function getExtFromBlob(blob, fallback = "mp4") {
+      const t = (blob?.type || "").toLowerCase();
+      if (t.includes("png")) return "png";
+      if (t.includes("webp")) return "webp";
+      if (t.includes("jpeg") || t.includes("jpg")) return "jpg";
+      if (t.includes("wav")) return "wav";
+      if (t.includes("mpeg") || t.includes("mp3")) return "mp3";
+      if (t.includes("ogg")) return "ogg";
+      if (t.includes("webm")) return "webm";
+      return fallback;
+    }
+
+    function extractMediaUrl(data, mediaKind = "video") {
       const urls = [];
       function walk(node) {
         if (!node) return;
@@ -771,6 +900,7 @@
         if (typeof node === "object") {
           if (node.video?.url) urls.push(node.video.url);
           if (node.audio?.url) urls.push(node.audio.url);
+          if (node.image?.url) urls.push(node.image.url);
           if (node.url) urls.push(node.url);
           if (node.value?.url) urls.push(node.value.url);
           for (const v of Object.values(node)) {
@@ -779,10 +909,30 @@
         }
       }
       walk(data);
-      if (isMusic) {
+      if (mediaKind === "music") {
         return urls.find((u) => /\.(mp3|wav|flac|ogg|m4a|aac)(\?|$)/i.test(u)) || urls[0] || null;
       }
+      if (mediaKind === "image") {
+        return urls.find((u) => /\.(png|webp|jpg|jpeg)(\?|$)/i.test(u) || u.startsWith("data:image")) || urls[0] || null;
+      }
       return urls.find((u) => /\.(mp4|webm|mov)(\?|$)/i.test(u)) || urls[0] || null;
+    }
+
+    function extractTextReply(data) {
+      if (typeof data === "string") return data;
+      if (Array.isArray(data)) {
+        for (let i = data.length - 1; i >= 0; i--) {
+          const item = data[i];
+          if (typeof item === "string" && item.trim()) return item;
+          if (Array.isArray(item)) {
+            const last = item[item.length - 1];
+            if (last?.content) return typeof last.content === "string" ? last.content : JSON.stringify(last.content);
+            if (Array.isArray(last) && typeof last[1] === "string") return last[1];
+          }
+          if (item?.content && typeof item.content === "string") return item.content;
+        }
+      }
+      return null;
     }
 
     /* ==========================================
@@ -806,6 +956,11 @@
           candidates.find((k) => /generat|music|song|infer|predict|wrap/i.test(k)) ||
           candidates[0] ||
           Object.keys(endpoints)[0];
+      } else if (taskType === "image") {
+        endpointName =
+          Object.keys(endpoints).find((k) => k === "/infer" || k.includes("generate_image") || k === "/generate") ||
+          Object.keys(endpoints).find((k) => /infer|generat|predict/i.test(k)) ||
+          Object.keys(endpoints)[0];
       } else {
         endpointName =
           (!imageBlob && Object.keys(endpoints).find((k) => k.includes("t2v") || k.includes("text"))) ||
@@ -824,7 +979,6 @@
       if (taskType === "music") {
         const mp = musicParsed || parseMusicPrompt(prompt, 450);
         const spaceLower = spaceOrUrl.toLowerCase();
-        // Niektoré staršie Space modely majú serverový strop 240s / 285s, ACE-Step 1.5 zvláda celých 450s (7:30)
         const maxAllowed = spaceLower.includes("1.5") ? 450 : spaceLower.includes("diffrhythm") ? 285 : 240;
         const effectiveDuration = Math.min(mp.duration, maxAllowed);
 
@@ -856,10 +1010,48 @@
             payload[key] = p.parameter_default;
           }
         }
+      } else if (taskType === "image") {
+        const dims = computeAspectDimensions(aspect, 1024 * 1024);
+        const filePayload = imageBlob ? (typeof handle_file === "function" ? handle_file(imageBlob) : imageBlob) : null;
+        for (const p of paramsMeta) {
+          const key = p.parameter_name || p.label;
+          const k = (key || "").toLowerCase();
+
+          if (filePayload && (["input_image", "image", "img", "init_image"].includes(k) || p.component === "Image")) {
+            payload[key] = filePayload;
+          } else if (k === "prompt" || k === "positive_prompt" || k === "text") {
+            payload[key] = prompt;
+          } else if (k === "negative_prompt") {
+            payload[key] = "";
+          } else if (["width", "width_ui", "output_width"].includes(k)) {
+            payload[key] = dims.w;
+          } else if (["height", "height_ui", "output_height"].includes(k)) {
+            payload[key] = dims.h;
+          } else if (k === "aspect_ratio" || k === "ratio") {
+            payload[key] = dims.ratioText;
+          } else if (k === "num_inference_steps" || k === "steps") {
+            payload[key] = spaceOrUrl.toLowerCase().includes("schnell") ? 4 : Math.max(8, steps);
+          } else if (k === "randomize_seed") {
+            payload[key] = true;
+          } else if (k === "seed") {
+            payload[key] = seed;
+          } else if (p.parameter_has_default) {
+            payload[key] = p.parameter_default;
+          }
+        }
       } else {
         const filePayload = imageBlob ? (typeof handle_file === "function" ? handle_file(imageBlob) : imageBlob) : null;
-        const w = spaceOrUrl.toLowerCase().includes("ltx") ? (aspect === "16:9" ? 704 : 384) : (aspect === "16:9" ? 832 : 464);
-        const h = spaceOrUrl.toLowerCase().includes("ltx") ? (aspect === "16:9" ? 384 : 672) : (aspect === "16:9" ? 464 : 832);
+        let w, h;
+        if (aspect === "16:9") {
+          w = spaceOrUrl.toLowerCase().includes("ltx") ? 704 : 832;
+          h = spaceOrUrl.toLowerCase().includes("ltx") ? 384 : 464;
+        } else if (aspect === "9:16") {
+          w = spaceOrUrl.toLowerCase().includes("ltx") ? 384 : 464;
+          h = spaceOrUrl.toLowerCase().includes("ltx") ? 672 : 832;
+        } else {
+          const dims = computeAspectDimensions(aspect, 640 * 640);
+          w = dims.w; h = dims.h;
+        }
 
         for (const p of paramsMeta) {
           const key = p.parameter_name || p.label;
@@ -904,7 +1096,11 @@
             const eta = msg.eta ? ` (~${Math.round(msg.eta)} s)` : "";
             onStatus(`${spaceOrUrl}: ${pos}${eta}`);
           } else if (msg.stage === "generating") {
-            onStatus(taskType === "music" ? `${spaceOrUrl}: Skladám hudbu a spev...` : `${spaceOrUrl}: Generujem snímky videa na GPU...`);
+            onStatus(
+              taskType === "music" ? `${spaceOrUrl}: Skladám hudbu a spev...`
+              : taskType === "image" ? `${spaceOrUrl}: Kreslím obrázok (${aspect})...`
+              : `${spaceOrUrl}: Generujem snímky videa na GPU...`
+            );
           } else if (msg.stage === "error") {
             throw new Error(msg.message || `Chyba na serveri ${spaceOrUrl}`);
           }
@@ -913,10 +1109,10 @@
         }
       }
 
-      const mediaUrl = extractMediaUrl(resultData, taskType === "music");
-      if (!mediaUrl) throw new Error(`${spaceOrUrl} nevrátil ${taskType === "music" ? "audio" : "video"} súbor.`);
+      const mediaUrl = extractMediaUrl(resultData, taskType);
+      if (!mediaUrl) throw new Error(`${spaceOrUrl} nevrátil ${taskType === "music" ? "audio" : taskType === "image" ? "obrázok" : "video"} súbor.`);
 
-      onStatus("Sťahujem výsledok do IndexedDB...");
+      onStatus("Sťahujem originál v plnej kvalite do IndexedDB...");
       let mediaBlob = null;
       try {
         const res = await fetch(mediaUrl);
@@ -928,7 +1124,7 @@
 
     async function runPuter({ imageBlob, prompt, aspect, onStatus }) {
       if (typeof puter === "undefined" || !puter?.ai?.txt2vid) throw new Error("Puter.js nie je dostupný.");
-      const size = aspect === "16:9" ? "1280x720" : "720x1280";
+      const size = aspect === "9:16" ? "720x1280" : "1280x720";
       let videoEl;
       let usedModelLabel;
 
@@ -944,16 +1140,10 @@
         onStatus("Generujem cez Puter.js (Wan 2.7 Text → Video)...");
         try {
           usedModelLabel = "Puter.js Wan 2.7 T2V";
-          videoEl = await puter.ai.txt2vid(prompt, {
-            model: "wan-ai/wan2.7-t2v",
-            size
-          });
+          videoEl = await puter.ai.txt2vid(prompt, { model: "wan-ai/wan2.7-t2v", size });
         } catch (err) {
           usedModelLabel = "Puter.js Wan 2.2 T2V";
-          videoEl = await puter.ai.txt2vid(prompt, {
-            model: "Wan-AI/Wan2.2-T2V-A14B",
-            size
-          });
+          videoEl = await puter.ai.txt2vid(prompt, { model: "Wan-AI/Wan2.2-T2V-A14B", size });
         }
       }
 
@@ -965,6 +1155,133 @@
         if (res.ok) videoBlob = await res.blob();
       } catch (e) {}
       return { videoUrl, videoBlob, usedModel: usedModelLabel };
+    }
+
+    async function runPuterImage({ model, imageBlob, prompt, aspect, onStatus }) {
+      if (typeof puter === "undefined" || !puter?.ai?.txt2img) throw new Error("Puter.js txt2img nie je dostupný.");
+      const dims = computeAspectDimensions(aspect, 1024 * 1024);
+      onStatus(`Generujem obrázok cez ${model} (${aspect})...`);
+
+      const opts = { model };
+      if (model.includes("gpt-image") || model.includes("dall-e")) {
+        // GPT Image / DALL-E prijíma štandardné pomery alebo ratio objekt
+        const allowed = ["1:1", "16:9", "9:16", "3:2", "2:3", "4:3", "3:4"];
+        if (allowed.includes(dims.ratioText)) {
+          opts.aspect_ratio = dims.ratioText;
+        } else {
+          opts.width = dims.w;
+          opts.height = dims.h;
+        }
+      } else {
+        opts.aspect_ratio = dims.ratioText;
+        opts.width = dims.w;
+        opts.height = dims.h;
+      }
+
+      if (imageBlob) {
+        opts.input_image = await blobToDataUrl(imageBlob);
+      }
+
+      let imgEl;
+      try {
+        imgEl = await puter.ai.txt2img(prompt, opts);
+      } catch (err) {
+        // Fallback ak konkrétny model neberie vlastný pomer strán
+        if (model.includes("gpt-image")) {
+          imgEl = await puter.ai.txt2img(prompt, {
+            model: "gpt-image-2",
+            aspect_ratio: dims.w > dims.h ? "16:9" : dims.h > dims.w ? "9:16" : "1:1"
+          });
+        } else {
+          throw err;
+        }
+      }
+
+      onStatus("Ukladám nepoškodený obrázok do IndexedDB...");
+      const blob = await imageElementToOriginalBlob(imgEl);
+      return { videoUrl: imgEl.src, videoBlob: blob, usedModel: `Puter.js ${model}` };
+    }
+
+    async function runPuterChat({ model, chatId, prompt, imageBlob, onStatus }) {
+      if (typeof puter === "undefined" || !puter?.ai?.chat) throw new Error("Puter.js chat nie je dostupný.");
+      onStatus(`Píše AI (${model})...`);
+
+      const history = await dbGetMessagesByChat(chatId);
+      const messages = [
+        { role: "system", content: "Si nápomocná, inteligentná a kreatívna AI v štúdiu Visual Studio Pro. Odpovedaj v jazyku používateľa (napr. po slovensky). Pomáhaj s otázkami, hrami, YouTube scenármi, textami aj AI promptami." }
+      ];
+      for (const m of history) {
+        if ((m.mediaType === "text" || (!m.mediaType && m.text)) && m.status !== "pending" && m.status !== "error" && m.text) {
+          messages.push({ role: m.role === "user" ? "user" : "assistant", content: m.text });
+        }
+      }
+      if (imageBlob) {
+        const dataUrl = await blobToDataUrl(imageBlob);
+        messages.push({
+          role: "user",
+          content: [
+            { type: "text", text: prompt },
+            { type: "image_url", image_url: { url: dataUrl } }
+          ]
+        });
+      } else {
+        messages.push({ role: "user", content: prompt });
+      }
+
+      const resp = await puter.ai.chat(messages, { model });
+      let text = "";
+      if (typeof resp === "string") text = resp;
+      else if (typeof resp?.message?.content === "string") text = resp.message.content;
+      else if (Array.isArray(resp?.message?.content)) text = resp.message.content.map((p) => p.text || "").join("\n");
+      else if (resp?.text) text = resp.text;
+      else text = String(resp || "");
+
+      if (!text.trim()) throw new Error("Textová AI vrátila prázdnu odpoveď.");
+      return { text: text.trim(), usedModel: `Puter.js ${model}` };
+    }
+
+    async function runGradioChat({ spaceId, prompt, imageBlob, hfToken, onStatus }) {
+      onStatus(`Pripájam sa k jazykovému modelu (${spaceId})...`);
+      const options = { events: ["data", "status"] };
+      if (hfToken) options.token = hfToken;
+      const app = await Client.connect(spaceId, options);
+      const apiInfo = await app.view_api();
+      const endpoints = apiInfo?.named_endpoints || {};
+
+      const endpointName =
+        Object.keys(endpoints).find((k) => k.includes("respond") || k.includes("chat")) ||
+        Object.keys(endpoints)[0];
+      if (!endpointName) throw new Error(`Space ${spaceId} nemá dostupný chat endpoint.`);
+
+      const paramsMeta = endpoints[endpointName]?.parameters || [];
+      const payload = {};
+      const files = imageBlob ? [typeof handle_file === "function" ? handle_file(imageBlob) : imageBlob] : [];
+
+      for (const p of paramsMeta) {
+        const key = p.parameter_name || p.label;
+        const k = (key || "").toLowerCase();
+        if (k === "message" || k === "msg" || k === "prompt" || k === "text") {
+          payload[key] = p.type?.includes("dict") || spaceId.includes("Uncensored") ? { text: prompt, files } : prompt;
+        } else if (k === "history") {
+          payload[key] = [];
+        } else if (k === "system_message" || k === "system_prompt") {
+          payload[key] = "Si užitočný slovenský AI asistent.";
+        } else if (p.parameter_has_default) {
+          payload[key] = p.parameter_default;
+        }
+      }
+
+      onStatus(`${spaceId}: Premýšľam a píšem odpoveď...`);
+      const job = app.submit(endpointName, payload);
+      let resultData = null;
+      for await (const msg of job) {
+        if (msg.type === "data") resultData = msg.data;
+        else if (msg.type === "status" && msg.stage === "error") throw new Error(msg.message || "Chyba chatu");
+      }
+
+      const text = extractTextReply(resultData);
+      if (!text) throw new Error(`${spaceId} nevrátil textovú odpoveď.`);
+      return { text, usedModel: spaceId };
     }
 
     /* ==========================================
@@ -1039,11 +1356,11 @@
         const empty = document.createElement("div");
         empty.className = "empty-state";
         empty.innerHTML = `
-          <h2>Tvoj AI Video & Music Chat — 9 600 000 Kreditov / Rok</h2>
+          <h2>Tvoj AI Studio Chat — 9 600 000 Kreditov / Rok</h2>
           <p>
-            Vlož fotku (alebo píš iba textový prompt pre <strong>Text → Video</strong> či <strong>🎵 Hudbu v štýle Suno do 7:30 min</strong>),
-            zvoľ <strong>16:9</strong> alebo <strong>9:16</strong> a napíš ľubovoľný popis alebo text piesne.
-            Pre úplne <strong>0 limitov a 0 cenzúry</strong> pripoj vlastný lokálny GPU server v <em>Nastaveniach</em>.
+            Vlož fotku (alebo píš iba textový prompt pre <strong>Text → Video</strong>, <strong>🖼️ Obrázky v štýle ChatGPT / hier / YT miniatúr</strong> v ľubovoľnom pomere strán,
+            <strong>🎵 Hudbu do 7:30 min</strong> alebo si píš s <strong>💬 Textovou AI</strong>).
+            Všetky obrázky, videá aj hudba sa ukladajú nepoškodené do <strong>IndexedDB</strong>.
           </p>
           <div class="prompt-chips">
             ${QUICK_PROMPTS.map((p) => `<button type="button" class="chip">${escapeHtml(p)}</button>`).join("")}
@@ -1059,7 +1376,7 @@
       for (const m of msgs) {
         const row = document.createElement("div");
         row.className = `msg ${m.role}`;
-        const ratioCls = m.aspect === "9:16" ? "r916" : "r169";
+        const ratioCls = m.aspect === "9:16" ? "r916" : m.aspect === "16:9" ? "r169" : "rcustom";
 
         const avatar = document.createElement("div");
         avatar.className = "avatar";
@@ -1069,15 +1386,20 @@
         bubble.className = "bubble";
 
         if (m.role === "user") {
+          const costUsed = m.cost || COST_PER_VIDEO;
           const modeBadge = m.mediaType === "audio"
             ? `<span class="badge">🎵 Hudba (${formatMinSec(m.musicDuration || 450)})</span>`
-            : m.inputImageBlob
-              ? `<span class="badge">${escapeHtml(m.aspect)}</span>`
-              : `<span class="badge">${escapeHtml(m.aspect)}</span><span class="badge">📝 Text → Video</span>`;
+            : m.mediaType === "image"
+              ? `<span class="badge">🖼️ Obrázok (${escapeHtml(m.aspect)})</span>`
+              : m.mediaType === "text"
+                ? `<span class="badge">💬 Textová AI</span>`
+                : m.inputImageBlob
+                  ? `<span class="badge">${escapeHtml(m.aspect)}</span>`
+                  : `<span class="badge">${escapeHtml(m.aspect)}</span><span class="badge">📝 Text → Video</span>`;
 
           bubble.innerHTML = `<div class="meta-badges">
             ${modeBadge}
-            <span class="badge gold">-${COST_PER_VIDEO} ⚡</span>
+            <span class="badge gold">-${costUsed} ⚡</span>
           </div>`;
           if (m.inputImageBlob) {
             const imgWrap = document.createElement("div");
@@ -1097,8 +1419,54 @@
           } else if (m.status === "error") {
             bubble.innerHTML = `<div class="error-box">
               <strong>Upozornenie:</strong> ${escapeHtml(m.errorText)}
-              <div style="margin-top:6px;font-size:12px;">Kredity (-${COST_PER_VIDEO} ⚡) boli automaticky vrátené späť na tvoj ročný účet.</div>
+              <div style="margin-top:6px;font-size:12px;">Kredity boli automaticky vrátené späť na tvoj ročný účet.</div>
             </div>`;
+          } else if (m.mediaType === "text") {
+            bubble.innerHTML = `<div class="meta-badges">
+              <span class="badge ok">✓ Uložené v IndexedDB</span>
+              <span class="badge">💬 ${escapeHtml(m.usedModel || "Textová AI")}</span>
+            </div>`;
+            const replyDiv = document.createElement("div");
+            replyDiv.className = "msg-text-reply";
+            replyDiv.textContent = m.text;
+            bubble.appendChild(replyDiv);
+
+            const copyBtn = document.createElement("button");
+            copyBtn.type = "button";
+            copyBtn.className = "btn-ghost";
+            copyBtn.style.alignSelf = "flex-start";
+            copyBtn.textContent = "📋 Kopírovať odpoveď";
+            copyBtn.addEventListener("click", () => {
+              navigator.clipboard?.writeText(m.text);
+              copyBtn.textContent = "✓ Skopírované";
+              setTimeout(() => { copyBtn.textContent = "📋 Kopírovať odpoveď"; }, 1500);
+            });
+            bubble.appendChild(copyBtn);
+          } else if (m.mediaType === "image") {
+            const imgSrc = m.videoBlob ? URL.createObjectURL(m.videoBlob) : m.videoUrl;
+            const ext = getExtFromBlob(m.videoBlob, "png");
+            bubble.innerHTML = `<div class="meta-badges">
+              <span class="badge ok">✓ Nepoškodené v IndexedDB</span>
+              <span class="badge">🖼️ ${escapeHtml(m.aspect)}</span>
+              <span class="badge">${formatBytes(m.videoBlob?.size || 0)}</span>
+              <span class="badge">${escapeHtml(m.usedModel || "Image AI")}</span>
+            </div>`;
+            const imgBox = document.createElement("div");
+            imgBox.className = "msg-gen-img";
+            const img = document.createElement("img");
+            img.src = imgSrc;
+            img.alt = "Vygenerovaný AI obrázok";
+            imgBox.appendChild(img);
+            bubble.appendChild(imgBox);
+
+            const dlBtn = document.createElement("a");
+            dlBtn.className = "btn-ghost";
+            dlBtn.style.alignSelf = "flex-start";
+            dlBtn.style.textDecoration = "none";
+            dlBtn.href = imgSrc;
+            dlBtn.download = `ai-image-${m.id.slice(0, 6)}.${ext}`;
+            dlBtn.textContent = `⬇ Stiahnuť originál (${ext.toUpperCase()})`;
+            bubble.appendChild(dlBtn);
           } else if (m.mediaType === "audio") {
             const audioSrc = m.videoBlob ? URL.createObjectURL(m.videoBlob) : m.videoUrl;
             bubble.innerHTML = `<div class="meta-badges">
@@ -1156,27 +1524,32 @@
     async function renderGallery() {
       const visuals = (await dbGetAll("visuals")).sort((a, b) => b.createdAt - a.createdAt);
       const grid = $("galleryGrid");
-      grid.innerHTML = visuals.length ? "" : `<p style="color:var(--muted);">Zatiaľ žiadne videá ani hudba v IndexedDB.</p>`;
+      grid.innerHTML = visuals.length ? "" : `<p style="color:var(--muted);">Zatiaľ žiadne videá, obrázky ani hudba v IndexedDB.</p>`;
 
       for (const v of visuals) {
         const src = v.videoBlob ? URL.createObjectURL(v.videoBlob) : v.videoUrl;
         const isAudio = v.mediaType === "audio";
+        const isImage = v.mediaType === "image";
+        const ext = isImage ? getExtFromBlob(v.videoBlob, "png") : isAudio ? getExtFromBlob(v.videoBlob, "mp3") : "mp4";
+
         const card = document.createElement("div");
         card.className = "gallery-card";
         card.innerHTML = `
           <div class="gallery-media ${isAudio ? "audio-box" : ""}">
             ${isAudio
               ? `<div style="width:100%;text-align:center;"><div style="font-size:32px;margin-bottom:10px;">🎵</div><audio src="${src}" controls style="width:100%;"></audio></div>`
-              : `<video src="${src}" controls loop muted playsinline></video>`}
+              : isImage
+                ? `<img src="${src}" alt="Uložený obrázok" />`
+                : `<video src="${src}" controls loop muted playsinline></video>`}
           </div>
           <div class="gallery-body">
             <div class="meta-badges">
-              <span class="badge">${isAudio ? `🎵 ${formatMinSec(v.musicDuration || 450)}` : escapeHtml(v.aspect)}</span>
+              <span class="badge">${isAudio ? `🎵 ${formatMinSec(v.musicDuration || 450)}` : isImage ? `🖼️ ${escapeHtml(v.aspect)}` : escapeHtml(v.aspect)}</span>
               <span class="badge">${formatBytes(v.sizeBytes)}</span>
             </div>
             <div class="gallery-prompt">${escapeHtml(v.prompt)}</div>
             <div style="display:flex;gap:8px;margin-top:4px;">
-              <a class="btn-ghost" style="flex:1;text-align:center;text-decoration:none;" href="${src}" download="${isAudio ? `song-${v.id.slice(0,6)}.mp3` : `visual-${v.id.slice(0,6)}.mp4`}">${isAudio ? "⬇ Audio" : "⬇ MP4"}</a>
+              <a class="btn-ghost" style="flex:1;text-align:center;text-decoration:none;" href="${src}" download="${isAudio ? `song-${v.id.slice(0,6)}.${ext}` : isImage ? `image-${v.id.slice(0,6)}.${ext}` : `visual-${v.id.slice(0,6)}.mp4`}">${isAudio ? "⬇ Audio" : isImage ? `⬇ ${ext.toUpperCase()}` : "⬇ MP4"}</a>
               <button class="btn-ghost del-btn" style="color:#fca5a5;">Zmazať</button>
             </div>
           </div>`;
@@ -1208,8 +1581,12 @@
 
       const engine = $("engineSelect").value;
       const isMusic = engine.startsWith("music-");
+      const isImageGen = engine.startsWith("img-");
+      const isTextLLM = engine.startsWith("llm-");
       const isExplicitT2V = engine.startsWith("t2v-");
       const inputBlob = (isMusic || isExplicitT2V) ? null : state.croppedImageBlob;
+      const mediaType = isMusic ? "audio" : isImageGen ? "image" : isTextLLM ? "text" : "video";
+      const cost = isTextLLM ? COST_PER_CHAT : COST_PER_VIDEO;
 
       const aspect = state.aspect;
       const duration = parseFloat($("durationInput").value) || 3.5;
@@ -1220,7 +1597,7 @@
       const musicParsed = isMusic ? parseMusicPrompt(prompt, musicMax) : null;
 
       try {
-        await spendCredits(COST_PER_VIDEO);
+        await spendCredits(cost);
       } catch (err) {
         return alert(err.message);
       }
@@ -1231,7 +1608,8 @@
       await dbPut("messages", {
         id: uid(), chatId: state.activeChatId, role: "user",
         text: prompt, aspect, inputImageBlob: inputBlob,
-        mediaType: isMusic ? "audio" : "video",
+        mediaType,
+        cost,
         musicDuration: musicParsed?.duration,
         createdAt: Date.now()
       });
@@ -1239,7 +1617,10 @@
       const chats = await dbGetAll("chats");
       const currentChat = chats.find((c) => c.id === state.activeChatId);
       if (currentChat) {
-        if (currentChat.title === "Nový AI vizuál") currentChat.title = (isMusic ? "🎵 " : "") + prompt.slice(0, 34);
+        if (currentChat.title === "Nový AI vizuál") {
+          const prefix = isMusic ? "🎵 " : isImageGen ? "🖼️ " : isTextLLM ? "💬 " : "";
+          currentChat.title = prefix + prompt.slice(0, 34);
+        }
         currentChat.updatedAt = Date.now();
         await dbPut("chats", currentChat);
       }
@@ -1247,9 +1628,15 @@
       const assistantMsg = {
         id: uid(), chatId: state.activeChatId, role: "assistant",
         status: "pending",
-        statusText: isMusic ? `Štartujem Suno-štýl AI hudbu (${formatMinSec(musicParsed.duration)})...` : "Štartujem generovanie...",
+        statusText: isMusic
+          ? `Štartujem Suno-štýl AI hudbu (${formatMinSec(musicParsed.duration)})...`
+          : isImageGen
+            ? `Generujem obrázok (${aspect})...`
+            : isTextLLM
+              ? "Textová AI premýšľa..."
+              : "Štartujem generovanie...",
         aspect,
-        mediaType: isMusic ? "audio" : "video",
+        mediaType,
         musicDuration: musicParsed?.duration,
         createdAt: Date.now() + 1
       };
@@ -1265,7 +1652,86 @@
 
       try {
         let result = null;
-        if (isMusic) {
+        if (isTextLLM) {
+          if (engine === "llm-auto") {
+            const errors = [];
+            const tryOrder = [
+              () => runPuterChat({ model: "openai/gpt-5.4-nano", chatId: state.activeChatId, prompt, imageBlob: inputBlob, onStatus: updateStatus }),
+              () => runPuterChat({ model: "gpt-5-nano", chatId: state.activeChatId, prompt, imageBlob: inputBlob, onStatus: updateStatus }),
+              () => runGradioChat({ spaceId: LLM_OPEN_SOURCE_POOL[0].id, prompt, imageBlob: inputBlob, hfToken, onStatus: updateStatus }),
+              () => runGradioChat({ spaceId: LLM_OPEN_SOURCE_POOL[1].id, prompt, imageBlob: inputBlob, hfToken, onStatus: updateStatus })
+            ];
+            for (const fn of tryOrder) {
+              try { result = await fn(); break; } catch (err) { errors.push(err.message); }
+            }
+            if (!result) throw new Error("Všetky textové AI modely momentálne neodpovedajú.\n\nDetaily: " + errors.slice(0, 2).join(" | "));
+          } else if (engine === "llm-puter-gpt") {
+            result = await runPuterChat({ model: "openai/gpt-5.4-nano", chatId: state.activeChatId, prompt, imageBlob: inputBlob, onStatus: updateStatus });
+          } else if (engine === "llm-puter-claude") {
+            result = await runPuterChat({ model: "claude-3-7-sonnet", chatId: state.activeChatId, prompt, imageBlob: inputBlob, onStatus: updateStatus });
+          } else if (engine === "llm-qwen-hf") {
+            result = await runGradioChat({ spaceId: LLM_OPEN_SOURCE_POOL[0].id, prompt, imageBlob: inputBlob, hfToken, onStatus: updateStatus });
+          }
+
+          assistantMsg.status = "done";
+          assistantMsg.text = result.text;
+          assistantMsg.usedModel = result.usedModel;
+          await dbPut("messages", assistantMsg);
+        } else if (isImageGen) {
+          if (engine === "img-auto-pool") {
+            const errors = [];
+            for (const candidate of IMAGE_OPEN_SOURCE_POOL) {
+              try {
+                await updateStatus(`Obrázky Auto-Rotácia: skúšam ${candidate.label} (${aspect})...`);
+                result = await runGradioSpace({
+                  spaceOrUrl: candidate.id, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken,
+                  taskType: "image", onStatus: updateStatus
+                });
+                break;
+              } catch (err) {
+                errors.push(`${candidate.label}: ${err.message}`);
+              }
+            }
+            if (!result) {
+              try {
+                result = await runPuterImage({ model: "gpt-image-2.6-flare", imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+              } catch (pErr1) {
+                try {
+                  result = await runPuterImage({ model: "gemini-2.5-flash-image-preview", imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+                } catch (pErr2) {
+                  throw new Error("Všetky bezplatné obrázkové servery sú momentálne vyťažené.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
+                }
+              }
+            }
+          } else if (engine === "img-puter-gpt") {
+            result = await runPuterImage({ model: "gpt-image-2.6-flare", imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+          } else if (engine === "img-puter-gemini") {
+            result = await runPuterImage({ model: "gemini-2.5-flash-image-preview", imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+          } else {
+            const imgMap = {
+              "img-zimage": "mrfakename/Z-Image-Turbo",
+              "img-flux": "black-forest-labs/FLUX.1-schnell",
+              "img-qwen": "Qwen/Qwen-Image-2.1"
+            };
+            result = await runGradioSpace({
+              spaceOrUrl: imgMap[engine], imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken,
+              taskType: "image", onStatus: updateStatus
+            });
+          }
+
+          assistantMsg.status = "done";
+          assistantMsg.videoBlob = result.videoBlob;
+          assistantMsg.videoUrl = result.videoUrl;
+          assistantMsg.usedModel = result.usedModel;
+          await dbPut("messages", assistantMsg);
+
+          await dbPut("visuals", {
+            id: uid(), chatId: state.activeChatId, prompt, aspect,
+            mediaType: "image",
+            videoBlob: result.videoBlob, videoUrl: result.videoUrl,
+            sizeBytes: result.videoBlob ? result.videoBlob.size : 0, createdAt: Date.now()
+          });
+        } else if (isMusic) {
           if (engine === "music-auto-pool") {
             const errors = [];
             for (const candidate of MUSIC_OPEN_SOURCE_POOL) {
@@ -1296,84 +1762,99 @@
               taskType: "music", musicParsed, onStatus: updateStatus
             });
           }
-        } else if (engine === "puter-wan" || engine === "t2v-puter") {
-          result = await runPuter({ imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
-        } else if (engine === "local-uncensored") {
-          if (!customServer) throw new Error("Zadaj adresu svojho lokálneho servera v Nastaveniach (napr. http://127.0.0.1:7860).");
-          result = await runGradioSpace({ spaceOrUrl: customServer, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus });
-        } else if (engine === "t2v-auto-pool" || (!inputBlob && engine === "auto-pool")) {
-          const errors = [];
-          for (const candidate of T2V_OPEN_SOURCE_POOL) {
-            try {
-              await updateStatus(`Text → Video Auto-Rotácia: skúšam ${candidate.label}...`);
-              result = await runGradioSpace({
-                spaceOrUrl: candidate.id, imageBlob: null, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus
-              });
-              break;
-            } catch (err) {
-              errors.push(`${candidate.label}: ${err.message}`);
-            }
-          }
-          if (!result) {
-            try {
-              await updateStatus("Text → Video Auto-Rotácia: prepínam na Puter.js Wan 2.7 T2V...");
-              result = await runPuter({ imageBlob: null, prompt, aspect, onStatus: updateStatus });
-            } catch (pErr) {
-              errors.push(`Puter.js: ${pErr.message}`);
-              throw new Error("Všetky verejné bezplatné Text-to-Video servery sú momentálne vyťažené alebo dosiahli IP limit.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
-            }
-          }
-        } else if (engine === "auto-pool") {
-          const errors = [];
-          for (const candidate of OPEN_SOURCE_POOL) {
-            try {
-              await updateStatus(`Auto-Rotácia: skúšam ${candidate.label}...`);
-              result = await runGradioSpace({
-                spaceOrUrl: candidate.id, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus
-              });
-              break;
-            } catch (err) {
-              errors.push(`${candidate.label}: ${err.message}`);
-            }
-          }
-          if (!result) {
-            try {
-              await updateStatus("Auto-Rotácia: prepínam na Puter.js Wan 2.2...");
-              result = await runPuter({ imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
-            } catch (pErr) {
-              errors.push(`Puter.js: ${pErr.message}`);
-              throw new Error("Všetky verejné bezplatné servery sú momentálne vyťažené alebo dosiahli IP limit. Pre 100 % prevádzku bez limitov pripoj vlastný lokálny GPU server.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
-            }
-          }
+
+          assistantMsg.status = "done";
+          assistantMsg.videoBlob = result.videoBlob;
+          assistantMsg.videoUrl = result.videoUrl;
+          assistantMsg.usedModel = result.usedModel;
+          await dbPut("messages", assistantMsg);
+
+          await dbPut("visuals", {
+            id: uid(), chatId: state.activeChatId, prompt, aspect,
+            mediaType: "audio",
+            musicDuration: musicParsed?.duration,
+            videoBlob: result.videoBlob, videoUrl: result.videoUrl,
+            sizeBytes: result.videoBlob ? result.videoBlob.size : 0, createdAt: Date.now()
+          });
         } else {
-          const map = {
-            "wan-fast": "prithivMLmods/Wan2.2-Fast",
-            "wan-dream": "dream2589632147/Dream-wan2-2-fp8da-aoti-preview-2",
-            "wan-faster": "zerogpu-aoti/wan2-2-fp8da-aoti-faster",
-            "framepack-f1": "linoyts/FramePack-F1",
-            "ltx-hf": "Lightricks/ltx-video-distilled",
-            "t2v-ltx25": "Lightricks/LTX-2.5",
-            "t2v-ltx23": "rahul7star/LTX-2.3-turbo",
-            "t2v-wan5b": "KingNish/wan2-2-fast"
-          };
-          result = await runGradioSpace({ spaceOrUrl: map[engine], imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus });
+          if (engine === "puter-wan" || engine === "t2v-puter") {
+            result = await runPuter({ imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+          } else if (engine === "local-uncensored") {
+            if (!customServer) throw new Error("Zadaj adresu svojho lokálneho servera v Nastaveniach (napr. http://127.0.0.1:7860).");
+            result = await runGradioSpace({ spaceOrUrl: customServer, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus });
+          } else if (engine === "t2v-auto-pool" || (!inputBlob && engine === "auto-pool")) {
+            const errors = [];
+            for (const candidate of T2V_OPEN_SOURCE_POOL) {
+              try {
+                await updateStatus(`Text → Video Auto-Rotácia: skúšam ${candidate.label}...`);
+                result = await runGradioSpace({
+                  spaceOrUrl: candidate.id, imageBlob: null, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus
+                });
+                break;
+              } catch (err) {
+                errors.push(`${candidate.label}: ${err.message}`);
+              }
+            }
+            if (!result) {
+              try {
+                await updateStatus("Text → Video Auto-Rotácia: prepínam na Puter.js Wan 2.7 T2V...");
+                result = await runPuter({ imageBlob: null, prompt, aspect, onStatus: updateStatus });
+              } catch (pErr) {
+                errors.push(`Puter.js: ${pErr.message}`);
+                throw new Error("Všetky verejné bezplatné Text-to-Video servery sú momentálne vyťažené alebo dosiahli IP limit.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
+              }
+            }
+          } else if (engine === "auto-pool") {
+            const errors = [];
+            for (const candidate of OPEN_SOURCE_POOL) {
+              try {
+                await updateStatus(`Auto-Rotácia: skúšam ${candidate.label}...`);
+                result = await runGradioSpace({
+                  spaceOrUrl: candidate.id, imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus
+                });
+                break;
+              } catch (err) {
+                errors.push(`${candidate.label}: ${err.message}`);
+              }
+            }
+            if (!result) {
+              try {
+                await updateStatus("Auto-Rotácia: prepínam na Puter.js Wan 2.2...");
+                result = await runPuter({ imageBlob: inputBlob, prompt, aspect, onStatus: updateStatus });
+              } catch (pErr) {
+                errors.push(`Puter.js: ${pErr.message}`);
+                throw new Error("Všetky verejné bezplatné servery sú momentálne vyťažené alebo dosiahli IP limit. Pre 100 % prevádzku bez limitov pripoj vlastný lokálny GPU server.\n\nDetaily: " + errors.slice(0, 3).join(" | "));
+              }
+            }
+          } else {
+            const map = {
+              "wan-fast": "prithivMLmods/Wan2.2-Fast",
+              "wan-dream": "dream2589632147/Dream-wan2-2-fp8da-aoti-preview-2",
+              "wan-faster": "zerogpu-aoti/wan2-2-fp8da-aoti-faster",
+              "framepack-f1": "linoyts/FramePack-F1",
+              "ltx-hf": "Lightricks/ltx-video-distilled",
+              "t2v-ltx25": "Lightricks/LTX-2.5",
+              "t2v-ltx23": "rahul7star/LTX-2.3-turbo",
+              "t2v-wan5b": "KingNish/wan2-2-fast"
+            };
+            result = await runGradioSpace({ spaceOrUrl: map[engine], imageBlob: inputBlob, prompt, aspect, duration, steps, hfToken, onStatus: updateStatus });
+          }
+
+          assistantMsg.status = "done";
+          assistantMsg.videoBlob = result.videoBlob;
+          assistantMsg.videoUrl = result.videoUrl;
+          assistantMsg.usedModel = result.usedModel;
+          await dbPut("messages", assistantMsg);
+
+          await dbPut("visuals", {
+            id: uid(), chatId: state.activeChatId, prompt, aspect,
+            mediaType: "video",
+            videoBlob: result.videoBlob, videoUrl: result.videoUrl,
+            sizeBytes: result.videoBlob ? result.videoBlob.size : 0, createdAt: Date.now()
+          });
         }
-
-        assistantMsg.status = "done";
-        assistantMsg.videoBlob = result.videoBlob;
-        assistantMsg.videoUrl = result.videoUrl;
-        assistantMsg.usedModel = result.usedModel;
-        await dbPut("messages", assistantMsg);
-
-        await dbPut("visuals", {
-          id: uid(), chatId: state.activeChatId, prompt, aspect,
-          mediaType: isMusic ? "audio" : "video",
-          musicDuration: musicParsed?.duration,
-          videoBlob: result.videoBlob, videoUrl: result.videoUrl,
-          sizeBytes: result.videoBlob ? result.videoBlob.size : 0, createdAt: Date.now()
-        });
       } catch (err) {
-        await refundCredits(COST_PER_VIDEO);
+        await refundCredits(cost);
         assistantMsg.status = "error";
         assistantMsg.errorText = err?.message || String(err);
         await dbPut("messages", assistantMsg);
@@ -1382,6 +1863,13 @@
         $("generateBtn").disabled = false;
         await renderAll();
       }
+    }
+
+    function updateGenerateButtonLabel() {
+      const val = $("engineSelect").value;
+      const span = $("generateBtn").querySelector("span");
+      if (val.startsWith("llm-")) span.textContent = `💬 Odoslať (-${COST_PER_CHAT} ⚡)`;
+      else span.textContent = `✨ Generate (-${COST_PER_VIDEO} ⚡)`;
     }
 
     /* ==========================================
@@ -1402,14 +1890,28 @@
     $("ratioSwitch").querySelectorAll(".ratio-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         $("ratioSwitch").querySelectorAll(".ratio-btn").forEach((b) => b.classList.remove("active"));
+        $("customRatioInput").classList.remove("active");
+        $("customRatioInput").value = "";
         btn.classList.add("active");
         state.aspect = btn.dataset.ratio;
         await refreshImagePreview();
       });
     });
 
+    $("customRatioInput").addEventListener("input", async (e) => {
+      const val = e.target.value.trim();
+      if (/^\d+(?:\.\d+)?\s*[:/xX]\s*\d+(?:\.\d+)?$/.test(val)) {
+        const normalized = val.replace(/\s*[:/xX]\s*/, ":");
+        $("ratioSwitch").querySelectorAll(".ratio-btn").forEach((b) => b.classList.remove("active"));
+        $("customRatioInput").classList.add("active");
+        state.aspect = normalized;
+        await refreshImagePreview();
+      }
+    });
+
     $("engineSelect").addEventListener("change", () => {
       if ($("engineSelect").value === "local-uncensored") $("settingsBar").classList.add("open");
+      updateGenerateButtonLabel();
       refreshImagePreview();
     });
 
@@ -1432,11 +1934,12 @@
     $("generateBtn").addEventListener("click", handleGenerate);
     $("promptInput").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleGenerate(); } });
     $("clearDbBtn").addEventListener("click", async () => {
-      if (confirm("Vymazať všetky chaty, videá a skladby z IndexedDB? (Ročné kredity ostanú zachované)")) {
+      if (confirm("Vymazať všetky chaty, videá, obrázky a skladby z IndexedDB? (Ročné kredity ostanú zachované)")) {
         await dbClearContentOnly(); state.activeChatId = null; await renderAll();
       }
     });
 
+    updateGenerateButtonLabel();
     await renderAll();
   </script>
 </body>
